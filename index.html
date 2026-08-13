@@ -1,0 +1,2133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f59e0b">
+  <meta name="description" content="Origo Breakfast Food Court billing, coupons, inventory and reports">
+  <title>Origo Breakfast Food Court</title>
+  <style>
+
+
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-soft: #fffaf0;
+  --ink: #172033;
+  --muted: #6d778a;
+  --line: #e5e9f0;
+  --primary: #f59e0b;
+  --primary-dark: #c76805;
+  --primary-soft: #fff1d0;
+  --green: #159570;
+  --green-soft: #e3f7ef;
+  --blue: #3568d4;
+  --blue-soft: #e9efff;
+  --red: #d93c50;
+  --red-soft: #ffeaed;
+  --purple: #7b57c7;
+  --shadow: 0 12px 30px rgba(30, 41, 59, .07);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Devanagari", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--ink); font-family: var(--font); }
+body { min-width: 320px; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .52; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid rgba(53, 104, 212, .42); outline-offset: 2px; }
+
+.app-shell { min-height: 100vh; }
+.topbar {
+  height: 76px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 28px;
+  background: rgba(255,255,255,.94);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+}
+.brand { display:flex; align-items:center; gap:12px; min-width: 0; }
+.brand-mark {
+  width: 44px; height: 44px; flex: 0 0 44px; border-radius: 14px;
+  display:grid; place-items:center; background: linear-gradient(145deg, #ffc34e, #ec8a0a);
+  color: white; box-shadow: 0 7px 15px rgba(245,158,11,.27); overflow:hidden;
+  font-size: 24px;
+}
+.brand-mark img { width:100%; height:100%; object-fit:cover; }
+.brand-copy { min-width:0; }
+.brand-name { font-size: 17px; line-height:1.15; font-weight: 800; letter-spacing:-.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.brand-subtitle { font-size: 11px; color: var(--muted); margin-top: 3px; white-space:nowrap; }
+.top-actions { display:flex; align-items:center; gap: 10px; }
+.lang-toggle { display:flex; background:#f1f3f7; padding:3px; border-radius: 10px; gap:2px; }
+.lang-toggle button { border:0; background:transparent; border-radius:8px; padding:8px 11px; color:var(--muted); font-weight:700; font-size:12px; }
+.lang-toggle button.active { background:#fff; color:var(--ink); box-shadow:0 2px 7px rgba(23,32,51,.10); }
+.user-chip { display:flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:999px; padding:7px 10px 7px 8px; background:#fff; }
+.user-avatar { display:grid; place-items:center; width:29px; height:29px; border-radius:50%; background:var(--blue-soft); color:var(--blue); font-size:14px; }
+.user-name { font-weight:800; font-size:12px; }
+.user-role { color:var(--muted); font-size:10px; margin-top:1px; }
+
+.app-layout { display:grid; grid-template-columns: 238px minmax(0,1fr); min-height: calc(100vh - 76px); }
+.sidebar { background:#fff; border-right:1px solid var(--line); padding:20px 14px; display:flex; flex-direction:column; gap:12px; }
+.nav-label { color:#9ba4b2; font-size:10px; text-transform:uppercase; letter-spacing:.12em; font-weight:800; padding:12px 12px 6px; }
+.nav-list { display:flex; flex-direction:column; gap:4px; }
+.nav-button { border:0; background:transparent; color:var(--muted); width:100%; display:flex; align-items:center; gap:11px; padding:12px; border-radius:12px; text-align:left; font-weight:700; font-size:13px; min-height:46px; }
+.nav-button:hover { background:#f8f9fc; color:var(--ink); }
+.nav-button.active { color:var(--primary-dark); background:var(--primary-soft); }
+.nav-button .nav-icon { width:24px; text-align:center; font-size:19px; }
+.nav-button .nav-lock { margin-left:auto; font-size:11px; opacity:.65; }
+.sidebar-foot { margin-top:auto; border-top:1px solid var(--line); padding:14px 10px 2px; }
+.connection-note { display:flex; gap:9px; font-size:11px; color:var(--muted); line-height:1.45; }
+.connection-dot { width:8px; height:8px; flex:0 0 8px; margin-top:4px; border-radius:50%; background:var(--green); box-shadow:0 0 0 4px var(--green-soft); }
+.cloud-dot-online { background:var(--green); box-shadow:0 0 0 4px var(--green-soft); }
+.cloud-dot-error { background:var(--red); box-shadow:0 0 0 4px var(--red-soft); }
+.cloud-badge { display:inline-flex; align-items:center; gap:6px; min-height:31px; padding:7px 9px; border-radius:999px; font-size:10px; font-weight:800; white-space:nowrap; }
+.cloud-badge-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+.cloud-online { color:var(--green); background:var(--green-soft); }
+.cloud-local { color:var(--muted); background:#f1f3f7; }
+.cloud-error { color:var(--red); background:var(--red-soft); }
+.main-content { padding: 28px clamp(18px, 4vw, 48px) 55px; overflow:hidden; }
+.page { max-width: 1500px; margin:0 auto; }
+.page-header { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:24px; }
+.eyebrow { text-transform:uppercase; letter-spacing:.12em; font-size:10px; font-weight:900; color:var(--primary-dark); margin:0 0 7px; }
+.page-title { margin:0; font-size:clamp(24px,3vw,34px); line-height:1.06; letter-spacing:-.04em; }
+.page-description { color:var(--muted); font-size:13px; margin:8px 0 0; max-width:700px; line-height:1.5; }
+.header-actions { display:flex; flex-wrap:wrap; align-items:center; gap:9px; }
+
+.btn { min-height:44px; border-radius:11px; padding:10px 15px; border:1px solid transparent; font-weight:800; font-size:12px; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+.btn:hover:not(:disabled) { transform:translateY(-1px); }
+.btn-primary { color:#fff; background:var(--primary); box-shadow:0 7px 14px rgba(245,158,11,.20); }
+.btn-primary:hover:not(:disabled) { background:var(--primary-dark); }
+.btn-dark { color:#fff; background:var(--ink); }
+.btn-secondary { color:var(--ink); background:#fff; border-color:var(--line); }
+.btn-secondary:hover:not(:disabled) { border-color:#cbd2df; background:#fafbfc; }
+.btn-ghost { color:var(--muted); background:transparent; border-color:transparent; }
+.btn-ghost:hover:not(:disabled) { background:#f1f3f7; color:var(--ink); }
+.btn-success { color:#fff; background:var(--green); }
+.btn-danger { color:var(--red); background:var(--red-soft); border-color:#ffd5da; }
+.btn-small { min-height:35px; padding:7px 10px; border-radius:9px; font-size:11px; }
+.btn-block { width:100%; }
+.icon-btn { width:40px; min-width:40px; height:40px; padding:0; border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:10px; display:grid; place-items:center; font-size:16px; }
+.icon-btn:hover { color:var(--ink); background:#f8f9fc; }
+
+.card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
+.card-pad { padding:22px; }
+.card-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:17px; }
+.card-title { margin:0; font-weight:850; font-size:15px; letter-spacing:-.02em; }
+.card-subtitle { margin:5px 0 0; color:var(--muted); font-size:11px; line-height:1.45; }
+.section-title { font-size:14px; font-weight:850; margin:0 0 13px; }
+.muted { color:var(--muted); }
+.small { font-size:11px; }
+.tiny { font-size:10px; }
+
+.kpi-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:22px; }
+.kpi-card { padding:18px; position:relative; overflow:hidden; }
+.kpi-card::after { content:""; position:absolute; width:80px; height:80px; border-radius:50%; right:-27px; top:-29px; background:var(--primary-soft); opacity:.8; }
+.kpi-card.green::after { background:var(--green-soft); }
+.kpi-card.blue::after { background:var(--blue-soft); }
+.kpi-card.red::after { background:var(--red-soft); }
+.kpi-top { display:flex; align-items:center; justify-content:space-between; gap:10px; position:relative; z-index:1; }
+.kpi-label { color:var(--muted); font-weight:700; font-size:11px; }
+.kpi-icon { width:34px; height:34px; display:grid; place-items:center; border-radius:11px; background:var(--primary-soft); font-size:17px; }
+.green .kpi-icon { background:var(--green-soft); }
+.blue .kpi-icon { background:var(--blue-soft); }
+.red .kpi-icon { background:var(--red-soft); }
+.kpi-value { font-size:25px; letter-spacing:-.05em; font-weight:900; margin:15px 0 4px; position:relative; z-index:1; }
+.kpi-foot { color:var(--muted); font-size:10px; position:relative; z-index:1; }
+.dashboard-grid { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr); gap:18px; }
+.dashboard-left, .dashboard-right { display:flex; flex-direction:column; gap:18px; min-width:0; }
+.hero-card { padding:25px; color:#fff; background:linear-gradient(132deg,#172033 0%,#293956 62%,#3c526e 100%); border:0; position:relative; overflow:hidden; }
+.hero-card::before { content:""; position:absolute; width:250px; height:250px; border:28px solid rgba(255,193,74,.15); border-radius:50%; right:-85px; top:-110px; }
+.hero-card::after { content:""; position:absolute; width:150px; height:150px; border:18px solid rgba(255,255,255,.06); border-radius:50%; right:105px; bottom:-106px; }
+.hero-content { position:relative; z-index:1; max-width:650px; }
+.hero-card .eyebrow { color:#ffc34e; }
+.hero-card h2 { font-size:clamp(24px,3vw,38px); line-height:1.08; letter-spacing:-.05em; margin:0 0 10px; }
+.hero-card p { color:#d4dcea; font-size:13px; line-height:1.55; max-width:560px; margin:0 0 19px; }
+.hero-actions { display:flex; gap:9px; flex-wrap:wrap; }
+.hero-card .btn-secondary { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.2); color:#fff; }
+.payment-bars { display:flex; flex-direction:column; gap:15px; }
+.payment-line { display:flex; flex-direction:column; gap:7px; }
+.payment-line-top { display:flex; justify-content:space-between; gap:10px; font-size:12px; font-weight:750; }
+.payment-track { height:8px; border-radius:99px; background:#eef1f5; overflow:hidden; }
+.payment-fill { height:100%; border-radius:99px; min-width:2px; background:var(--green); }
+.payment-fill.upi { background:var(--blue); }
+.payment-fill.due { background:var(--red); }
+.quick-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.quick-action { border:1px solid var(--line); background:#fff; border-radius:13px; padding:15px; text-align:left; min-height:92px; display:flex; flex-direction:column; justify-content:space-between; gap:13px; }
+.quick-action:hover { border-color:#ffd27c; box-shadow:0 7px 17px rgba(245,158,11,.11); }
+.quick-icon { font-size:22px; }
+.quick-label { font-weight:850; font-size:12px; }
+.quick-sub { color:var(--muted); font-size:10px; margin-top:3px; }
+
+.table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+table { width:100%; border-collapse:collapse; font-size:12px; }
+th { color:#8993a3; font-size:10px; letter-spacing:.06em; text-transform:uppercase; font-weight:850; text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); white-space:nowrap; }
+td { padding:13px 12px; border-bottom:1px solid #f0f2f5; vertical-align:middle; }
+tbody tr:last-child td { border-bottom:0; }
+tbody tr:hover { background:#fcfcfd; }
+.td-strong { font-weight:800; }
+.td-right { text-align:right; }
+.td-center { text-align:center; }
+.status { display:inline-flex; align-items:center; gap:5px; border-radius:999px; padding:5px 8px; font-size:10px; font-weight:850; white-space:nowrap; }
+.status::before { content:""; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.status-paid { color:var(--green); background:var(--green-soft); }
+.status-due { color:var(--red); background:var(--red-soft); }
+.status-partial { color:var(--primary-dark); background:var(--primary-soft); }
+.status-new { color:var(--blue); background:var(--blue-soft); }
+.status-served { color:var(--muted); background:#f0f2f5; }
+.empty-state { padding:35px 18px; color:var(--muted); text-align:center; }
+.empty-icon { font-size:28px; margin-bottom:8px; }
+
+.billing-layout { display:grid; grid-template-columns:minmax(330px,.85fr) minmax(480px,1.45fr); gap:18px; align-items:start; }
+.billing-panel { padding:20px; }
+.sticky-card { position:sticky; top:95px; }
+.form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+.form-grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.form-field { display:flex; flex-direction:column; gap:6px; min-width:0; }
+.form-field.full { grid-column:1/-1; }
+.form-label { color:#697487; font-size:10px; text-transform:uppercase; letter-spacing:.07em; font-weight:850; }
+.form-hint { color:var(--muted); font-size:10px; line-height:1.4; }
+input, select, textarea { width:100%; color:var(--ink); background:#fff; border:1px solid #dfe4ec; border-radius:10px; min-height:43px; padding:10px 11px; outline:none; }
+input:focus, select:focus, textarea:focus { border-color:#f5b941; box-shadow:0 0 0 3px rgba(245,185,65,.15); }
+textarea { resize:vertical; min-height:78px; }
+input[type="number"] { -moz-appearance:textfield; }
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+.input-with-prefix { position:relative; }
+.input-with-prefix > span { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--muted); font-weight:800; font-size:12px; }
+.input-with-prefix input { padding-left:27px; }
+.divider { height:1px; background:var(--line); margin:19px 0; }
+.cart-list { display:flex; flex-direction:column; gap:9px; min-height:64px; max-height:400px; overflow-y:auto; padding-right:2px; }
+.cart-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:10px; align-items:center; padding:11px 0; border-bottom:1px dashed #e7eaf0; }
+.cart-row:last-child { border-bottom:0; }
+.cart-item-name { font-weight:800; font-size:12px; line-height:1.25; }
+.cart-item-meta { color:var(--muted); font-size:10px; margin-top:4px; }
+.qty-control { display:flex; align-items:center; gap:5px; border:1px solid var(--line); border-radius:9px; padding:3px; }
+.qty-control button { border:0; background:#f6f7f9; color:var(--ink); width:28px; height:28px; border-radius:7px; font-size:17px; line-height:1; }
+.qty-control button:hover { background:var(--primary-soft); }
+.qty-control span { min-width:20px; text-align:center; font-size:12px; font-weight:850; }
+.cart-price { font-size:12px; font-weight:850; min-width:58px; text-align:right; }
+.cart-remove { border:0; color:#a5adbb; background:transparent; font-size:14px; padding:3px; }
+.cart-remove:hover { color:var(--red); }
+.menu-toolbar { display:flex; align-items:center; gap:9px; margin-bottom:15px; flex-wrap:wrap; }
+.menu-search { flex:1; min-width:180px; position:relative; }
+.menu-search input { padding-left:37px; }
+.menu-search span { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--muted); }
+.category-pills { display:flex; gap:5px; flex-wrap:wrap; }
+.pill { border:1px solid var(--line); color:var(--muted); background:#fff; padding:8px 11px; border-radius:999px; font-size:11px; font-weight:800; }
+.pill.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+.menu-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11px; }
+.menu-item { display:flex; flex-direction:column; justify-content:space-between; min-height:128px; padding:14px; border:1px solid var(--line); background:#fff; border-radius:14px; text-align:left; transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease; }
+.menu-item:hover { transform:translateY(-2px); border-color:#f7c667; box-shadow:0 7px 16px rgba(245,158,11,.12); }
+.menu-item:active { transform:scale(.98); }
+.menu-item-top { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+.menu-item-icon { width:33px; height:33px; display:grid; place-items:center; border-radius:10px; background:var(--surface-soft); font-size:17px; }
+.menu-item-icon.beverage { background:var(--blue-soft); }
+.menu-item-category { font-size:9px; text-transform:uppercase; color:var(--muted); letter-spacing:.07em; font-weight:850; }
+.menu-item-name { font-weight:850; font-size:12px; line-height:1.3; margin-top:10px; }
+.menu-item-mr { font-size:11px; color:var(--muted); margin-top:3px; line-height:1.35; }
+.menu-item-bottom { display:flex; justify-content:space-between; align-items:center; gap:6px; margin-top:13px; }
+.menu-item-price { font-weight:900; font-size:13px; }
+.add-mark { width:27px; height:27px; display:grid; place-items:center; background:var(--primary); color:#fff; border-radius:8px; font-size:17px; font-weight:500; }
+.bill-totals { display:flex; flex-direction:column; gap:9px; }
+.total-line { display:flex; justify-content:space-between; gap:12px; font-size:12px; color:var(--muted); }
+.total-line strong { color:var(--ink); }
+.total-line.grand { font-size:17px; color:var(--ink); font-weight:900; padding-top:11px; margin-top:2px; border-top:1px solid var(--line); }
+.total-line.grand strong { font-size:21px; letter-spacing:-.04em; }
+.payment-switch { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.payment-option { position:relative; }
+.payment-option input { position:absolute; opacity:0; pointer-events:none; }
+.payment-option label { display:flex; align-items:center; gap:8px; justify-content:center; border:1px solid var(--line); border-radius:10px; padding:11px; min-height:43px; font-size:12px; font-weight:850; color:var(--muted); cursor:pointer; }
+.payment-option input:checked + label { color:var(--ink); border-color:var(--primary); background:var(--primary-soft); }
+.pay-status-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px; }
+.checkbox-label { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:11px; font-weight:750; cursor:pointer; }
+.checkbox-label input { width:17px; height:17px; min-height:0; accent-color:var(--primary); }
+.change-box { margin-top:11px; border-radius:11px; padding:11px 13px; background:var(--green-soft); color:var(--green); display:flex; justify-content:space-between; gap:10px; font-weight:850; font-size:12px; }
+.due-box { background:var(--red-soft); color:var(--red); }
+.bill-actions { display:flex; gap:9px; margin-top:18px; }
+.bill-actions .btn { flex:1; }
+.shortcut-note { text-align:center; color:var(--muted); font-size:10px; margin-top:11px; }
+
+.inventory-grid { display:grid; grid-template-columns:minmax(250px,.7fr) minmax(0,1.8fr); gap:18px; align-items:start; }
+.inventory-form { padding:20px; position:sticky; top:95px; }
+.inventory-form .form-grid { grid-template-columns:1fr; }
+.inventory-table td input { min-height:34px; padding:6px 7px; font-size:11px; width:100px; }
+.stock-meter { width:90px; height:7px; background:#eef1f5; border-radius:99px; overflow:hidden; display:inline-block; vertical-align:middle; margin-right:6px; }
+.stock-meter i { display:block; height:100%; border-radius:99px; background:var(--green); }
+.stock-meter i.low { background:var(--primary); }
+.stock-meter i.out { background:var(--red); }
+
+.report-filter { padding:18px; margin-bottom:18px; }
+.report-filter-grid { display:grid; grid-template-columns:1.1fr 1.1fr 1fr 1.1fr auto; gap:10px; align-items:end; }
+.report-filter .btn { min-height:43px; }
+.report-summary { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:11px; margin-bottom:18px; }
+.report-stat { padding:14px 15px; border:1px solid var(--line); border-radius:13px; background:#fff; }
+.report-stat-label { font-size:10px; color:var(--muted); font-weight:800; }
+.report-stat-value { font-size:19px; font-weight:900; margin-top:8px; letter-spacing:-.04em; }
+.report-tabs { display:flex; gap:5px; flex-wrap:wrap; }
+.report-tab { border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:999px; padding:8px 12px; font-size:11px; font-weight:800; }
+.report-tab.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+.export-actions { display:flex; gap:7px; flex-wrap:wrap; }
+
+.settings-grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr); gap:18px; align-items:start; }
+.settings-column { display:flex; flex-direction:column; gap:18px; min-width:0; }
+.settings-card { padding:21px; }
+.logo-upload { display:flex; align-items:center; gap:14px; padding:12px; background:#fafbfc; border:1px dashed #d8dee8; border-radius:12px; }
+.logo-preview { width:60px; height:60px; border-radius:15px; display:grid; place-items:center; overflow:hidden; background:linear-gradient(145deg,#ffc34e,#ec8a0a); color:#fff; font-size:27px; flex:0 0 60px; }
+.logo-preview img { width:100%; height:100%; object-fit:cover; }
+.logo-upload-copy { flex:1; min-width:0; }
+.logo-upload-copy strong { display:block; font-size:12px; }
+.logo-upload-copy span { display:block; font-size:10px; color:var(--muted); margin-top:4px; line-height:1.4; }
+.menu-admin-row { display:grid; grid-template-columns:minmax(0,1fr) 95px 90px auto; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f0f2f5; }
+.menu-admin-row:last-child { border-bottom:0; }
+.menu-admin-name { font-weight:800; font-size:12px; }
+.menu-admin-name span { display:block; color:var(--muted); font-weight:500; font-size:10px; margin-top:3px; }
+.chip { display:inline-flex; width:max-content; padding:4px 7px; border-radius:999px; font-size:9px; font-weight:850; background:var(--surface-soft); color:var(--primary-dark); }
+.chip.blue { background:var(--blue-soft); color:var(--blue); }
+.security-callout { background:#fff7e4; color:#8b5a11; border:1px solid #fde1a1; padding:12px 13px; border-radius:11px; font-size:11px; line-height:1.5; }
+.danger-zone { border-color:#ffd7dc; }
+.danger-zone .card-title { color:var(--red); }
+.backup-actions { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+
+.overlay { position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:18px; }
+.overlay-dark { background:rgba(17,24,39,.66); backdrop-filter:blur(9px); }
+.auth-card { width:min(450px,100%); background:#fff; border-radius:24px; box-shadow:0 25px 80px rgba(0,0,0,.25); padding:30px; }
+.auth-brand { text-align:center; margin-bottom:24px; }
+.auth-brand .brand-mark { margin:0 auto 13px; width:58px; height:58px; font-size:31px; }
+.auth-brand h1 { margin:0; font-size:25px; letter-spacing:-.05em; }
+.auth-brand p { margin:7px 0 0; color:var(--muted); font-size:12px; line-height:1.5; }
+.auth-role-tabs { display:grid; grid-template-columns:repeat(2,1fr); gap:7px; background:#f4f5f7; padding:4px; border-radius:11px; margin-bottom:18px; }
+.auth-role-tabs button { border:0; background:transparent; padding:11px 8px; border-radius:8px; font-weight:800; font-size:11px; color:var(--muted); }
+.auth-role-tabs button.active { background:#fff; color:var(--ink); box-shadow:0 2px 7px rgba(23,32,51,.1); }
+.pin-input { letter-spacing:.35em; text-align:center; font-size:22px; font-weight:900; }
+.demo-pin { margin:14px 0 0; padding:10px 12px; border-radius:10px; background:#f7f8fa; color:var(--muted); font-size:10px; line-height:1.5; }
+.auth-error { color:var(--red); min-height:17px; font-size:11px; margin:8px 0 0; text-align:center; font-weight:700; }
+
+.modal-backdrop { position:fixed; inset:0; z-index:80; background:rgba(17,24,39,.55); backdrop-filter:blur(5px); display:grid; place-items:center; padding:15px; }
+.modal { background:#fff; width:min(680px,100%); max-height:min(90vh,800px); overflow:auto; border-radius:21px; box-shadow:0 22px 80px rgba(0,0,0,.24); }
+.modal.wide { width:min(950px,100%); }
+.modal-head { display:flex; align-items:flex-start; justify-content:space-between; gap:15px; padding:21px 23px 16px; border-bottom:1px solid var(--line); }
+.modal-head h3 { margin:0; font-size:17px; letter-spacing:-.03em; }
+.modal-head p { color:var(--muted); font-size:11px; margin:5px 0 0; }
+.modal-body { padding:21px 23px; }
+.modal-foot { display:flex; justify-content:flex-end; gap:8px; padding:15px 23px 21px; border-top:1px solid var(--line); }
+.success-modal { text-align:center; }
+.success-visual { width:70px; height:70px; display:grid; place-items:center; margin:0 auto 13px; border-radius:50%; background:var(--green-soft); color:var(--green); font-size:33px; }
+.success-modal h3 { margin:0; font-size:22px; letter-spacing:-.04em; }
+.success-modal .success-copy { color:var(--muted); font-size:12px; margin:7px 0 20px; }
+.ticket-ids { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:18px; }
+.ticket-id { text-align:left; padding:12px 13px; border-radius:12px; background:#fafbfc; border:1px solid var(--line); }
+.ticket-id span { display:block; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:9px; font-weight:850; }
+.ticket-id strong { display:block; margin-top:5px; font-size:16px; letter-spacing:.02em; }
+.success-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
+
+.toast-region { position:fixed; z-index:150; right:20px; bottom:20px; display:flex; flex-direction:column; gap:8px; width:min(360px,calc(100vw - 40px)); pointer-events:none; }
+.toast { display:flex; align-items:flex-start; gap:9px; padding:13px 14px; background:#172033; color:#fff; border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,.19); font-size:12px; line-height:1.4; animation:toast-in .22s ease-out; pointer-events:auto; }
+.toast.success { background:#116b54; }
+.toast.error { background:#a51f34; }
+@keyframes toast-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+.inline-alert { display:flex; gap:9px; align-items:flex-start; padding:11px 13px; border-radius:11px; font-size:11px; line-height:1.5; margin-top:13px; }
+.inline-alert.info { color:#31529a; background:var(--blue-soft); }
+.inline-alert.warn { color:#8b5a11; background:#fff7e4; }
+.inline-alert.success { color:#127353; background:var(--green-soft); }
+
+.footer-note { color:var(--muted); font-size:10px; margin-top:16px; text-align:center; }
+.footer-note strong { color:var(--ink); }
+.action-row { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.no-results { border:1px dashed #dfe4ec; border-radius:13px; padding:30px 15px; text-align:center; color:var(--muted); font-size:12px; }
+.date-badge { display:inline-flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; background:#fff; border:1px solid var(--line); border-radius:999px; padding:8px 11px; }
+.owner-nav { margin-top:auto; border-top:1px solid var(--line); padding-top:9px; }
+.owner-nav .nav-label { padding-top:8px; }
+.stock-review-card { margin-top:18px; border-left:4px solid var(--green); }
+.stock-review-card.review-due { border-left-color:var(--primary); background:#fffaf0; }
+.stock-usage-card { border-left:4px solid var(--green); }
+.stock-usage-card.review-due { border-left-color:var(--primary); background:#fffaf0; }
+.usage-summary { display:flex; gap:12px; flex-wrap:wrap; margin-top:13px; padding-top:11px; border-top:1px dashed var(--line); color:var(--muted); font-size:11px; }
+.usage-summary strong { color:var(--ink); }
+.inventory-right-column { display:flex; flex-direction:column; gap:18px; min-width:0; }
+.inventory-usage-card input { min-height:36px; padding:7px 8px; max-width:120px; }
+.menu-admin-row .btn { min-width:36px; }
+@media (max-width: 1180px) {
+  .kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .billing-layout { grid-template-columns: minmax(300px,.8fr) minmax(420px,1.2fr); }
+  .menu-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .report-filter-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media (max-width: 950px) {
+  .topbar { padding:11px 17px; }
+  .app-layout { grid-template-columns:1fr; }
+  .sidebar { border-right:0; border-bottom:1px solid var(--line); padding:8px 12px; position:sticky; top:76px; z-index:15; overflow-x:auto; flex-direction:row; align-items:center; }
+  .nav-label { display:none; }
+  .nav-list { flex-direction:row; min-width:max-content; }
+  .owner-nav { display:flex; gap:4px; margin:0 0 0 5px; padding:0 0 0 8px; border-top:0; border-left:1px solid var(--line); min-width:max-content; }
+  .owner-nav .nav-label { display:none; }
+  .owner-nav .nav-button { display:flex; }
+  .sidebar-foot { display:none; }
+  .nav-button { width:auto; padding:10px 12px; white-space:nowrap; }
+  .nav-button .nav-lock { display:none; }
+  .main-content { padding-top:23px; }
+  .dashboard-grid, .settings-grid, .inventory-grid { grid-template-columns:1fr; }
+  .inventory-form, .sticky-card { position:static; }
+  .report-summary { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media (max-width: 700px) {
+  .topbar { height:68px; }
+  .app-layout { min-height:calc(100vh - 68px); }
+  .brand-mark { width:38px; height:38px; flex-basis:38px; border-radius:12px; font-size:20px; }
+  .brand-name { font-size:14px; }
+  .brand-subtitle { display:none; }
+  .top-actions { gap:5px; }
+  .cloud-badge { display:none; }
+  .user-chip { padding:5px; border:0; background:transparent; }
+  .user-chip .user-copy { display:none; }
+  .lang-toggle button { padding:7px 8px; }
+  .sidebar { top:68px; }
+  .main-content { padding:19px 13px 40px; }
+  .page-header { flex-direction:column; gap:14px; margin-bottom:18px; }
+  .page-header .header-actions { width:100%; }
+  .page-header .header-actions .btn { flex:1; }
+  .kpi-grid { gap:9px; margin-bottom:15px; }
+  .kpi-card { padding:14px; }
+  .kpi-value { font-size:20px; margin-top:11px; }
+  .hero-card { padding:20px; }
+  .hero-card h2 { font-size:25px; }
+  .card-pad, .billing-panel, .inventory-form, .settings-card { padding:16px; }
+  .form-grid, .form-grid.three { grid-template-columns:1fr; gap:11px; }
+  .form-field.full { grid-column:auto; }
+  .menu-toolbar { align-items:stretch; }
+  .menu-search { flex-basis:100%; }
+  .menu-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .menu-item { min-height:121px; padding:11px; }
+  .billing-layout { grid-template-columns:1fr; gap:13px; }
+  .cart-list { max-height:none; }
+  .report-filter-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .report-summary { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .report-summary .report-stat:last-child { grid-column:1/-1; }
+  .menu-admin-row { grid-template-columns:minmax(0,1fr) auto; }
+  .menu-admin-row .menu-admin-price, .menu-admin-row .menu-admin-category { display:none; }
+  .backup-actions { grid-template-columns:1fr; }
+  .modal-head, .modal-body, .modal-foot { padding-left:17px; padding-right:17px; }
+  .ticket-ids { grid-template-columns:1fr; }
+  .modal-foot { flex-wrap:wrap; }
+  .modal-foot .btn { flex:1; }
+  .success-actions .btn { flex:1; }
+  .owner-nav .nav-button { padding-left:9px; padding-right:9px; font-size:11px; }
+}
+
+.print-host { display:none; }
+body.is-printing > *:not(#print-host) { display:none !important; }
+body.is-printing #print-host { display:block !important; }
+body.is-printing { background:#fff !important; }
+
+.work-tabs { display:flex; align-items:center; gap:5px; overflow-x:auto; padding:0 0 16px; margin:0 auto 2px; max-width:1500px; scrollbar-width:thin; }
+.work-tab, .work-tab-more { flex:0 0 auto; display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:10px; padding:9px 11px; min-height:38px; font-size:11px; font-weight:800; white-space:nowrap; }
+.work-tab.active { color:var(--primary-dark); background:var(--primary-soft); border-color:#f7c667; }
+.work-tab-more { color:var(--blue); border-style:dashed; }
+.work-tab-close { display:grid; place-items:center; width:18px; height:18px; border-radius:50%; color:var(--muted); font-size:14px; line-height:1; }
+.work-tab-close:hover { color:var(--red); background:var(--red-soft); }
+.history-actions { display:flex; flex-wrap:wrap; align-items:center; gap:5px; }
+.inventory-summary-grid { grid-template-columns:repeat(4,minmax(0,1fr)); margin:0 0 18px; }
+.inventory-summary-grid .kpi-card { min-height:125px; }
+@media (max-width: 950px) { .work-tabs { padding-bottom:13px; } .inventory-summary-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width: 700px) { .work-tabs { margin-left:-3px; margin-right:-3px; padding-left:3px; } .inventory-summary-grid { gap:9px; } .inventory-summary-grid .kpi-card { min-height:112px; } .history-actions .btn { flex:1; } }
+
+.shortcut-bar { max-width:1500px; margin:0 auto 15px; display:flex; align-items:center; gap:7px; overflow-x:auto; padding:0 0 2px; scrollbar-width:thin; }
+.shortcut-caption { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.08em; font-weight:850; margin-right:3px; white-space:nowrap; }
+.shortcut-button { min-height:38px; display:inline-flex; align-items:center; gap:7px; padding:7px 10px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); font-size:11px; font-weight:800; white-space:nowrap; }
+.shortcut-button:hover { border-color:#f7c667; background:var(--primary-soft); }
+.shortcut-button kbd { padding:3px 5px; border:1px solid #cbd2df; border-bottom-width:2px; border-radius:5px; background:#f6f7f9; color:var(--primary-dark); font-size:10px; font-family:inherit; }
+@media (max-width:700px) { .shortcut-bar { margin-left:-3px; margin-right:-3px; padding-left:3px; } .shortcut-caption { display:none; } .shortcut-button { flex:1 0 auto; } }
+
+.coupon-card-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.coupon-order-card { padding:18px; }
+.coupon-order-code { font-size:18px; font-weight:900; letter-spacing:.03em; }
+.coupon-order-items { display:flex; flex-direction:column; gap:8px; padding:14px 0; margin:13px 0; border-top:1px dashed var(--line); border-bottom:1px dashed var(--line); }
+.coupon-order-items > div { display:flex; justify-content:space-between; gap:10px; font-size:12px; font-weight:800; }
+.coupon-order-items small { display:block; color:var(--muted); font-size:10px; font-weight:500; margin-top:2px; }
+.coupon-order-total { display:flex; justify-content:space-between; gap:10px; color:var(--muted); font-size:11px; margin-bottom:13px; }
+.coupon-order-total strong { color:var(--ink); font-size:16px; }
+@media (max-width:700px) { .coupon-card-grid { grid-template-columns:1fr; gap:10px; } .coupon-order-card { padding:15px; } }
+@media print {
+  .topbar, .sidebar, .header-actions, .btn, .toast-region { display:none !important; }
+  .app-layout { display:block; }
+  .main-content { padding:0; }
+  body { background:#fff; }
+  .card { box-shadow:none; }
+}
+
+  
+  </style>
+</head>
+<body>
+  <div id="app" class="app-shell" aria-live="polite">
+    <header id="topbar" class="topbar"></header>
+    <div class="app-layout">
+      <aside id="sidebar" class="sidebar"></aside>
+      <main id="main-content" class="main-content" tabindex="-1"></main>
+    </div>
+  </div>
+  <div id="auth-gate" class="overlay overlay-dark" hidden></div>
+  <div id="modal-root"></div>
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script>window.ORIGO_FIREBASE_CONFIG = { enabled: false };</script>
+  <script>
+
+'use strict';
+
+/*
+  Origo Breakfast Food Court
+  A small, offline-first point-of-sale app. Data is stored on this device in
+  localStorage so the counter can continue working without a network.
+*/
+
+const STORAGE_KEY = 'origo-breakfast-foodcourt-v1';
+const APP_VERSION = 1;
+
+const I18N = {
+  en: {
+    dashboard: 'Dashboard', billing: 'New Bill', inventory: 'Inventory', menuTab: 'Menu & prices', shortcuts: 'Shortcuts', shortcutInventory: 'Inventory', shortcutNewBill: 'New bill', shortcutHistory: 'Bill history', shortcutMenu: 'Menu & prices', shortcutCoupons: 'Pending coupons', historyTab: 'Bill history', couponTab: 'Pending coupons', couponQueue: 'Coupon queue', pending: 'Pending', inProgress: 'In progress', startOrder: 'Start order', markReady: 'Mark served', lastUpdated: 'Last updated', noPendingCoupons: 'No pending coupons.', historyTab: 'Bill history', reports: 'Reports', settings: 'Menu & Settings',
+    owner: 'Owner', staff: 'Staff', logout: 'Lock / Logout', today: 'Today', newBill: 'New Bill', quickSale: 'Quick sale',
+    customerName: 'Customer name', mobile: 'Mobile number', billNumber: 'Bill number', coupon: 'Coupon token',
+    items: 'Items', quantity: 'Quantity', food: 'Food', beverage: 'Beverages', beverages: 'Beverages', all: 'All items',
+    subtotal: 'Subtotal', discount: 'Discount', gst: 'GST', grandTotal: 'Grand total', payment: 'Payment', cash: 'Cash', upi: 'UPI',
+    amountReceived: 'Amount received', change: 'Give back', due: 'Due', payLater: 'Mark as due / pay later',
+    saveBill: 'Save bill & create coupon', clear: 'Clear', searchMenu: 'Search food or beverages', add: 'Add',
+    printBill: 'Print bill', printCombined: 'Print bill + coupon', printCoupon: 'Print coupon', sharePdf: 'PDF', downloadPdf: 'Download PDF', close: 'Close',
+    recentBills: 'Recent bills', collections: "Today's collection", bills: 'Bills', openDues: 'Open dues', lowStock: 'Low stock',
+    thisWeek: 'This week', quickActions: 'Quick actions', inventoryAdd: 'Add raw material', viewReports: 'View reports',
+    noBills: 'No bills yet. Start a new sale from the button above.', noItems: 'No menu items match this search.',
+    date: 'Date', customer: 'Customer', amount: 'Amount', search: 'Search', status: 'Status', actions: 'Actions', open: 'Open', served: 'Served', markServed: 'Mark served',
+    inventoryTitle: 'Raw material inventory', inventoryHelp: 'Track purchases and the quantity remaining at a glance.', inventorySummary: 'Inventory summary', totalRaw: 'Raw materials', lowRaw: 'Low stock', outRaw: 'Out of stock', reviewDue: 'Stock review due', stockReview: 'Stock update', updateStock: 'Update stock', usedQty: 'Used quantity', saveUsage: 'Save stock usage', rawMaterial: 'Raw material',
+    purchaseDate: 'Purchase date', purchasedQty: 'Purchased quantity', remainingQty: 'Remaining quantity', unit: 'Unit', reorderLevel: 'Reorder level',
+    saveItem: 'Save raw material', updateItem: 'Update raw material', edit: 'Edit', remove: 'Remove', stock: 'Stock',
+    reportsTitle: 'Owner reports & downloads', reportsHelp: 'Filter bills by period, product or beverage and export the result.',
+    from: 'From', to: 'To', period: 'Period', reportType: 'Report view', apply: 'Apply filters', exportCsv: 'CSV', exportJson: 'JSON', exportPdf: 'PDF',
+    billsReport: 'Bills / date wise', productReport: 'Product wise', beverageReport: 'Beverages wise', paymentReport: 'Payment wise',
+    summary: 'Summary', totalSales: 'Total sales', received: 'Received', tax: 'Tax',
+    historyTitle: 'Bill history', historyHelp: 'Search old bills, edit details, reprint the combined bill and settle pending dues.', editBill: 'Edit bill', settleBill: 'Settle due', settled: 'Due settled', saveBillEdit: 'Save bill changes', searchBills: 'Search bill, customer or mobile', noHistory: 'No bills match this search.', openTabs: 'Open tabs', more: 'More', closeTab: 'Close tab', settingsTitle: 'Menu, business & security', settingsHelp: 'Owner controls for the food court, menu, access PINs and backups.',
+    businessDetails: 'Food court details', courtName: 'Food court name', logo: 'Food court logo', fssai: 'FSSAI licence no.', gstNo: 'GST number',
+    gstTax: 'GST tax (%)', defaultDiscount: 'Default discount (₹)', footer: 'Thank-you footer', disclaimer: 'Bill disclaimer', saveSettings: 'Save business details',
+    menuManagement: 'Food & beverage menu', addMenuItem: 'Add menu item', itemEnglish: 'Name in English', itemMarathi: 'Name in Marathi', price: 'Price (₹)', category: 'Category',
+    security: 'PIN security', staffPin: 'Staff PIN', ownerPin: 'Owner PIN 1', ownerPin2: 'Owner PIN 2', deleteTopPin: 'Delete PIN – top', deleteBottomPin: 'Delete PIN – bottom', saveSecurity: 'Save PINs',
+    backup: 'Backup & data control', downloadBackup: 'Download backup', restoreBackup: 'Restore backup', deleteAll: 'Delete billing & inventory data',
+    danger: 'Danger zone', demoHint: 'Demo PINs: Staff 2580 · Owner 8080 + 8081. Change them before going live.',
+    welcome: 'Good morning', selfService: 'Self-service counter ready', tapItem: 'Tap a menu item to add it to the bill.', onlineBill: 'Download a PDF bill',
+    noAccess: 'Owner access required', noAccessCopy: 'Reports, downloads, backups and settings are protected by the owner PIN.',
+    noInventory: 'No raw materials yet. Add the first purchase on the left.', low: 'Low', out: 'Out', available: 'Available',
+    foodCourt: 'Food court', item: 'Item', rate: 'Rate', qty: 'Qty', total: 'Total', details: 'Details',
+    paymentMode: 'Payment mode', paymentStatus: 'Payment status', paid: 'Paid', partial: 'Partial', dueStatus: 'Due',
+    reportPeriodToday: 'Today', reportPeriodWeek: 'This week', reportPeriodMonth: 'This month', reportPeriodYear: 'This year', reportPeriodCustom: 'Custom range',
+    allCategories: 'All', foodCategory: 'Food', beverageCategory: 'Beverage', addToBill: 'Tap to add', editMenu: 'Edit item', active: 'Active', inactive: 'Inactive',
+    saveMenu: 'Save menu item', cancel: 'Cancel', reset: 'Reset', refresh: 'Refresh', noReportData: 'No matching records for this period.',
+    billSaved: 'Bill saved successfully', couponReady: 'Coupon token is synced and ready to print.', billToken: 'Bill & coupon IDs', billPdf: 'PDF bill is ready',
+    deleteWarning: 'This clears bills, coupons and inventory from this device. Menu and business settings stay safe.', confirmDelete: 'Delete permanently',
+    topPin: 'Enter top PIN', bottomPin: 'Enter bottom PIN', deleteSuccess: 'Billing and inventory data deleted.',
+    invalidPin: 'Incorrect PIN. Please try again.', required: 'Please fill the required fields.', invalidAmount: 'Please enter a valid amount.',
+    reportBills: 'Bills', reportProducts: 'Products', reportBeverages: 'Beverages', reportPayments: 'Payments', whatsappReport: 'WhatsApp report',
+    noPhone: 'No mobile number was saved. The PDF will be downloaded and WhatsApp text will open.',
+    fileReady: 'PDF downloaded. Attach it in WhatsApp if file sharing is not supported by this browser.',
+    businessSaved: 'Business details saved.', securitySaved: 'PINs saved.', menuSaved: 'Menu item saved.', inventorySaved: 'Inventory saved.',
+    deleted: 'Deleted.', backupRestored: 'Backup restored. The app has been refreshed.', backupInvalid: 'That backup file is not a valid Origo backup.',
+    coupon: 'Coupon', print: 'Print', share: 'Share', servedNow: 'Coupon marked as served.',
+    rawMaterialName: 'Raw material name', unitExample: 'kg, litre, packet, piece', purchaseCost: 'Cost per unit (₹)',
+    footerMr: 'आज आमच्यासोबत जेवण केल्याबद्दल धन्यवाद.', footerEn: 'Thank you for having food with us today.',
+    orderNotes: 'Order notes', optional: 'Optional', mobileHint: 'For WhatsApp PDF sharing',
+    cashHint: 'Enter the cash received; change is calculated automatically.', dueHint: 'Bill remains visible in open dues.',
+    noLogo: 'No logo uploaded', uploadLogo: 'Upload logo', removeLogo: 'Remove logo',
+    custom: 'Custom', allPayments: 'All payments', paymentCash: 'Cash', paymentUpi: 'UPI', paymentDue: 'Due',
+    records: 'records', dateRange: 'Date range', gross: 'Gross sales', discounts: 'Discounts',
+    addRaw: 'Add raw material', updateRaw: 'Update raw material', closeDay: 'Close day',
+    inventoryDate: 'Purchase date', quantityRemaining: 'Quantity remaining', reportExported: 'Report exported.',
+    yesDelete: 'Yes, delete', noKeep: 'No, keep data', confirmRemove: 'Remove this record?',
+    servedLabel: 'Coupon queue', openCouponHint: 'Self-service tokens waiting to be completed.',
+    footerMarathi: 'मराठी footer', footerEnglish: 'English footer'
+  },
+  mr: {
+    dashboard: 'डॅशबोर्ड', billing: 'नवीन बिल', inventory: 'साठा', menuTab: 'मेनू व किंमती', shortcuts: 'शॉर्टकट', shortcutInventory: 'साठा', shortcutNewBill: 'नवीन बिल', shortcutHistory: 'बिल इतिहास', shortcutMenu: 'मेनू व किंमती', shortcutCoupons: 'प्रलंबित कूपन', historyTab: 'बिल इतिहास', couponTab: 'प्रलंबित कूपन', couponQueue: 'कूपन रांग', pending: 'प्रलंबित', inProgress: 'काम सुरू', startOrder: 'ऑर्डर सुरू', markReady: 'पूर्ण झाले', lastUpdated: 'शेवटचा अपडेट', noPendingCoupons: 'प्रलंबित कूपन नाहीत.', historyTab: 'बिल इतिहास', reports: 'अहवाल', settings: 'मेनू व सेटिंग्ज',
+    owner: 'मालक', staff: 'कर्मचारी', logout: 'लॉक / बाहेर पडा', today: 'आज', newBill: 'नवीन बिल', quickSale: 'जलद विक्री',
+    customerName: 'ग्राहकाचे नाव', mobile: 'मोबाईल नंबर', billNumber: 'बिल नंबर', coupon: 'कूपन टोकन',
+    items: 'पदार्थ', quantity: 'प्रमाण', food: 'खाद्यपदार्थ', beverage: 'पेय', beverages: 'पेय', all: 'सर्व पदार्थ',
+    subtotal: 'एकूण', discount: 'सूट', gst: 'जीएसटी', grandTotal: 'अंतिम रक्कम', payment: 'पेमेंट', cash: 'रोख', upi: 'यूपीआय',
+    amountReceived: 'मिळालेली रक्कम', change: 'परत द्यायची रक्कम', due: 'बाकी', payLater: 'उधारी / नंतर पेमेंट',
+    saveBill: 'बिल सेव्ह करा व कूपन तयार करा', clear: 'पुसा', searchMenu: 'खाद्यपदार्थ किंवा पेय शोधा', add: 'जोडा',
+    printBill: 'बिल प्रिंट', printCombined: 'बिल + कूपन प्रिंट', printCoupon: 'कूपन प्रिंट', sharePdf: 'पीडीएफ', downloadPdf: 'पीडीएफ डाउनलोड', close: 'बंद',
+    recentBills: 'अलीकडील बिले', collections: 'आजची वसुली', bills: 'बिले', openDues: 'बाकी रक्कम', lowStock: 'कमी साठा',
+    thisWeek: 'या आठवड्यात', quickActions: 'जलद कृती', inventoryAdd: 'कच्चा माल जोडा', viewReports: 'अहवाल पहा',
+    noBills: 'अजून बिले नाहीत. वरील बटणाने नवीन विक्री सुरू करा.', noItems: 'या शोधासाठी पदार्थ सापडला नाही.',
+    date: 'दिनांक', customer: 'ग्राहक', amount: 'रक्कम', search: 'शोधा', status: 'स्थिती', actions: 'कृती', open: 'उघडे', served: 'पूर्ण', markServed: 'पूर्ण झाले',
+    inventoryTitle: 'कच्च्या मालाचा साठा', inventoryHelp: 'खरेदी व शिल्लक प्रमाण एका नजरेत पाहा.', inventorySummary: 'साठा सारांश', totalRaw: 'कच्चा माल', lowRaw: 'कमी साठा', outRaw: 'संपलेला साठा', reviewDue: 'साठा अपडेट बाकी', stockReview: 'साठा अपडेट', updateStock: 'साठा अपडेट करा', usedQty: 'वापरलेले प्रमाण', saveUsage: 'साठा वापर सेव्ह करा', rawMaterial: 'कच्चा माल',
+    purchaseDate: 'खरेदी दिनांक', purchasedQty: 'खरेदी प्रमाण', remainingQty: 'शिल्लक प्रमाण', unit: 'युनिट', reorderLevel: 'पुन्हा मागवण्याची पातळी',
+    saveItem: 'कच्चा माल सेव्ह करा', updateItem: 'कच्चा माल अपडेट करा', edit: 'बदल', remove: 'काढा', stock: 'साठा',
+    reportsTitle: 'मालकाचे अहवाल व डाउनलोड', reportsHelp: 'कालावधी, पदार्थ किंवा पेयानुसार बिले फिल्टर करून डाउनलोड करा.',
+    from: 'पासून', to: 'पर्यंत', period: 'कालावधी', reportType: 'अहवाल प्रकार', apply: 'फिल्टर लागू करा', exportCsv: 'CSV', exportJson: 'JSON', exportPdf: 'PDF',
+    billsReport: 'बिले / दिनांकानुसार', productReport: 'पदार्थानुसार', beverageReport: 'पेयांनुसार', paymentReport: 'पेमेंटनुसार',
+    summary: 'सारांश', totalSales: 'एकूण विक्री', received: 'मिळाले', tax: 'कर',
+    historyTitle: 'बिल इतिहास', historyHelp: 'जुनी बिले शोधा, बदल करा, पुन्हा प्रिंट करा आणि बाकी रक्कम भरा.', editBill: 'बिल बदल', settleBill: 'बाकी भरा', settled: 'बाकी भरली', saveBillEdit: 'बिल बदल सेव्ह करा', searchBills: 'बिल, ग्राहक किंवा मोबाईल शोधा', noHistory: 'या शोधासाठी बिले नाहीत.', openTabs: 'उघडलेले टॅब', more: 'अधिक', closeTab: 'टॅब बंद करा', settingsTitle: 'मेनू, व्यवसाय व सुरक्षा', settingsHelp: 'फूड कोर्टची माहिती, मेनू, PIN व बॅकअपसाठी मालकाचे नियंत्रण.',
+    businessDetails: 'फूड कोर्टची माहिती', courtName: 'फूड कोर्टचे नाव', logo: 'फूड कोर्टचा लोगो', fssai: 'FSSAI परवाना क्र.', gstNo: 'जीएसटी नंबर',
+    gstTax: 'जीएसटी कर (%)', defaultDiscount: 'डीफॉल्ट सूट (₹)', footer: 'धन्यवाद संदेश', disclaimer: 'बिल तळटीप', saveSettings: 'व्यवसाय माहिती सेव्ह करा',
+    menuManagement: 'खाद्यपदार्थ व पेय मेनू', addMenuItem: 'मेनू पदार्थ जोडा', itemEnglish: 'इंग्रजी नाव', itemMarathi: 'मराठी नाव', price: 'किंमत (₹)', category: 'प्रकार',
+    security: 'PIN सुरक्षा', staffPin: 'कर्मचारी PIN', ownerPin: 'मालक PIN १', ownerPin2: 'मालक PIN २', deleteTopPin: 'डिलीट PIN – वरचा', deleteBottomPin: 'डिलीट PIN – खालचा', saveSecurity: 'PIN सेव्ह करा',
+    backup: 'बॅकअप व डेटा नियंत्रण', downloadBackup: 'बॅकअप डाउनलोड', restoreBackup: 'बॅकअप परत आणा', deleteAll: 'बिल व साठा डेटा डिलीट करा',
+    danger: 'धोकादायक कृती', demoHint: 'डेमो PIN: कर्मचारी 2580 · मालक 8080 + 8081. वापराआधी बदला.',
+    welcome: 'शुभ सकाळ', selfService: 'सेल्फ-सर्व्हिस काउंटर तयार आहे', tapItem: 'मेनू पदार्थावर टॅप करून बिलात जोडा.', onlineBill: 'पीडीएफ बिल डाउनलोड करा',
+    noAccess: 'मालकाची परवानगी आवश्यक', noAccessCopy: 'अहवाल, डाउनलोड, बॅकअप आणि सेटिंग्ज मालकाच्या PIN ने सुरक्षित आहेत.',
+    noInventory: 'अजून कच्चा माल नाही. डावीकडून पहिली खरेदी जोडा.', low: 'कमी', out: 'संपले', available: 'उपलब्ध',
+    foodCourt: 'फूड कोर्ट', item: 'पदार्थ', rate: 'दर', qty: 'प्रमाण', total: 'एकूण', details: 'तपशील',
+    paymentMode: 'पेमेंट पद्धत', paymentStatus: 'पेमेंट स्थिती', paid: 'भरले', partial: 'अंशतः', dueStatus: 'बाकी',
+    reportPeriodToday: 'आज', reportPeriodWeek: 'हा आठवडा', reportPeriodMonth: 'हा महिना', reportPeriodYear: 'हे वर्ष', reportPeriodCustom: 'कस्टम कालावधी',
+    allCategories: 'सर्व', foodCategory: 'खाद्य', beverageCategory: 'पेय', addToBill: 'टॅप करून जोडा', editMenu: 'पदार्थ बदल', active: 'चालू', inactive: 'बंद',
+    saveMenu: 'मेनू सेव्ह करा', cancel: 'रद्द', reset: 'रीसेट', refresh: 'रिफ्रेश', noReportData: 'या कालावधीसाठी रेकॉर्ड नाहीत.',
+    billSaved: 'बिल यशस्वीपणे सेव्ह झाले', couponReady: 'कूपन टोकन बिलासोबत जोडले गेले आहे.', billToken: 'बिल व कूपन क्रमांक', billPdf: 'पीडीएफ बिल तयार आहे',
+    deleteWarning: 'या डिव्हाइसवरील बिले, कूपन व साठा नष्ट होतील. मेनू व व्यवसाय माहिती सुरक्षित राहील.', confirmDelete: 'कायमचे डिलीट करा',
+    topPin: 'वरचा PIN टाका', bottomPin: 'खालचा PIN टाका', deleteSuccess: 'बिल व साठा डेटा डिलीट झाला.',
+    invalidPin: 'PIN चुकीचा आहे. पुन्हा प्रयत्न करा.', required: 'कृपया आवश्यक माहिती भरा.', invalidAmount: 'योग्य रक्कम भरा.',
+    reportBills: 'बिले', reportProducts: 'पदार्थ', reportBeverages: 'पेय', reportPayments: 'पेमेंट', whatsappReport: 'व्हॉट्सॲप अहवाल',
+    noPhone: 'मोबाईल नंबर सेव्ह केलेला नाही. पीडीएफ डाउनलोड होईल व व्हॉट्सॲप मजकूर उघडेल.',
+    fileReady: 'पीडीएफ डाउनलोड झाले. या ब्राउझरमध्ये फाइल शेअर नसेल तर व्हॉट्सॲपमध्ये ते जोडा.',
+    businessSaved: 'व्यवसाय माहिती सेव्ह झाली.', securitySaved: 'PIN सेव्ह झाले.', menuSaved: 'मेनू पदार्थ सेव्ह झाला.', inventorySaved: 'साठा सेव्ह झाला.',
+    deleted: 'डिलीट झाले.', backupRestored: 'बॅकअप परत आणला. ॲप रिफ्रेश झाले.', backupInvalid: 'हा वैध Origo बॅकअप नाही.',
+    coupon: 'कूपन', print: 'प्रिंट', share: 'शेअर', servedNow: 'कूपन पूर्ण झाले.',
+    rawMaterialName: 'कच्च्या मालाचे नाव', unitExample: 'किलो, लिटर, पाकीट, नग', purchaseCost: 'प्रति युनिट किंमत (₹)',
+    footerMr: 'आज आमच्यासोबत जेवण केल्याबद्दल धन्यवाद.', footerEn: 'Thank you for having food with us today.',
+    orderNotes: 'ऑर्डर नोंद', optional: 'ऐच्छिक', mobileHint: 'व्हॉट्सॲप पीडीएफसाठी',
+    cashHint: 'मिळालेले रोख पैसे टाका; परत रक्कम आपोआप मोजली जाईल.', dueHint: 'बिल बाकी यादीत दिसेल.',
+    noLogo: 'लोगो अपलोड केलेला नाही', uploadLogo: 'लोगो अपलोड', removeLogo: 'लोगो काढा',
+    custom: 'कस्टम', allPayments: 'सर्व पेमेंट', paymentCash: 'रोख', paymentUpi: 'यूपीआय', paymentDue: 'बाकी',
+    records: 'रेकॉर्ड', dateRange: 'दिनांक कालावधी', gross: 'एकूण विक्री', discounts: 'सूट',
+    addRaw: 'कच्चा माल जोडा', updateRaw: 'कच्चा माल अपडेट', closeDay: 'दिवस बंद',
+    inventoryDate: 'खरेदी दिनांक', quantityRemaining: 'शिल्लक प्रमाण', reportExported: 'अहवाल डाउनलोड झाला.',
+    yesDelete: 'हो, डिलीट करा', noKeep: 'नको, डेटा ठेवा', confirmRemove: 'हा रेकॉर्ड काढायचा?',
+    servedLabel: 'कूपन रांग', openCouponHint: 'पूर्ण होण्याची वाट पाहणारे सेल्फ-सर्व्हिस टोकन.',
+    footerMarathi: 'मराठी तळटीप', footerEnglish: 'इंग्रजी तळटीप'
+  }
+};
+
+const DEFAULT_MENU = [
+  { id: 'm-poha', nameEn: 'Kanda Poha', nameMr: 'कांदा पोहे', category: 'food', price: 40, icon: '🍚', active: true },
+  { id: 'm-misal', nameEn: 'Misal Pav', nameMr: 'मिसळ पाव', category: 'food', price: 70, icon: '🥣', active: true },
+  { id: 'm-idli', nameEn: 'Idli Sambar', nameMr: 'इडली सांबार', category: 'food', price: 60, icon: '🍘', active: true },
+  { id: 'm-vada', nameEn: 'Medu Vada', nameMr: 'मेदू वडा', category: 'food', price: 55, icon: '🍩', active: true },
+  { id: 'm-upma', nameEn: 'Vegetable Upma', nameMr: 'भाजी उपमा', category: 'food', price: 45, icon: '🥗', active: true },
+  { id: 'm-dosa', nameEn: 'Masala Dosa', nameMr: 'मसाला डोसा', category: 'food', price: 90, icon: '🥞', active: true },
+  { id: 'm-tea', nameEn: 'Cutting Tea', nameMr: 'कटिंग चहा', category: 'beverage', price: 15, icon: '☕', active: true },
+  { id: 'm-coffee', nameEn: 'Filter Coffee', nameMr: 'फिल्टर कॉफी', category: 'beverage', price: 25, icon: '☕', active: true },
+  { id: 'm-lemon', nameEn: 'Lemon Tea', nameMr: 'लिंबू चहा', category: 'beverage', price: 20, icon: '🍋', active: true },
+  { id: 'm-lassi', nameEn: 'Sweet Lassi', nameMr: 'गोड लस्सी', category: 'beverage', price: 45, icon: '🥛', active: true },
+  { id: 'm-juice', nameEn: 'Fresh Juice', nameMr: 'फ्रेश ज्यूस', category: 'beverage', price: 60, icon: '🧃', active: true },
+  { id: 'm-water', nameEn: 'Mineral Water', nameMr: 'मिनरल वॉटर', category: 'beverage', price: 20, icon: '💧', active: true }
+];
+
+const DEFAULT_INVENTORY = [
+  { id: 'r-poha', nameEn: 'Poha rice flakes', nameMr: 'पोह्याचे तांदूळ', unit: 'kg', purchaseDate: todayIso(), purchasedQty: 25, remainingQty: 18, reorderLevel: 5, purchaseCost: 62 },
+  { id: 'r-onion', nameEn: 'Onion', nameMr: 'कांदा', unit: 'kg', purchaseDate: todayIso(), purchasedQty: 20, remainingQty: 9, reorderLevel: 5, purchaseCost: 32 },
+  { id: 'r-milk', nameEn: 'Milk', nameMr: 'दूध', unit: 'litre', purchaseDate: todayIso(), purchasedQty: 30, remainingQty: 12, reorderLevel: 8, purchaseCost: 58 },
+  { id: 'r-tea', nameEn: 'Tea powder', nameMr: 'चहा पावडर', unit: 'kg', purchaseDate: todayIso(), purchasedQty: 5, remainingQty: 3, reorderLevel: 1, purchaseCost: 420 },
+  { id: 'r-oil', nameEn: 'Cooking oil', nameMr: 'खाद्य तेल', unit: 'litre', purchaseDate: todayIso(), purchasedQty: 25, remainingQty: 4, reorderLevel: 6, purchaseCost: 145 }
+];
+
+function defaultSettings() {
+  return {
+    courtName: 'Origo Breakfast Food Court',
+    logo: '',
+    fssai: '',
+    gstNo: '',
+    gstTax: 5,
+    defaultDiscount: 0,
+    footerEn: 'Thank you for having food with us today.',
+    footerMr: 'आज आमच्यासोबत जेवण केल्याबद्दल धन्यवाद.',
+    disclaimer: 'Goods once sold are not returnable. Please check your order before leaving.',
+    staffPin: '2580',
+    ownerPin: '8080',
+    ownerPin2: '8081',
+    deleteTopPin: '1234',
+    deleteBottomPin: '4321',
+    language: 'en'
+  };
+}
+
+function makeDefaultState() {
+  return {
+    version: APP_VERSION,
+    settings: defaultSettings(),
+    menu: DEFAULT_MENU.map(item => ({ ...item })),
+    inventory: DEFAULT_INVENTORY.map(item => ({ ...item })),
+    bills: [],
+    inventoryReview: { lastAt: null, lastBillCount: 0 },
+    inventoryUsageLog: [],
+    nextBillSeq: 1,
+    nextCouponSeq: 1
+  };
+}
+
+function loadState() {
+  const fresh = makeDefaultState();
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return fresh;
+    const parsed = JSON.parse(raw);
+    return {
+      ...fresh,
+      ...parsed,
+      settings: { ...fresh.settings, ...(parsed.settings || {}) },
+      menu: Array.isArray(parsed.menu) ? parsed.menu : fresh.menu,
+      inventory: Array.isArray(parsed.inventory) ? parsed.inventory : fresh.inventory,
+      bills: Array.isArray(parsed.bills) ? parsed.bills : [],
+      inventoryReview: { ...fresh.inventoryReview, ...(parsed.inventoryReview || {}) },
+      inventoryUsageLog: Array.isArray(parsed.inventoryUsageLog) ? parsed.inventoryUsageLog : [],
+      nextBillSeq: Number(parsed.nextBillSeq) || 1,
+      nextCouponSeq: Number(parsed.nextCouponSeq) || 1
+    };
+  } catch (error) {
+    console.warn('Could not load saved data', error);
+    return fresh;
+  }
+}
+
+let state = loadState();
+let cloudSync = { status: 'local', error: '', lastSync: null };
+let applyingRemoteState = false;
+let session = { role: null, view: 'dashboard' };
+let openTabs = ['dashboard'];
+let historySearch = '';
+let pendingView = null;
+let authRole = 'staff';
+let menuSearch = '';
+let menuCategory = 'all';
+let inventoryEditingId = null;
+let menuEditingId = null;
+let modalState = null;
+let lastCreatedBillId = null;
+let billingDraft = blankBillingDraft();
+let reportState = {
+  preset: 'month',
+  from: firstDayOfMonthIso(),
+  to: todayIso(),
+  type: 'bills'
+};
+
+function blankBillingDraft() {
+  return {
+    customerName: '', mobile: '', cart: [], discount: '', paymentMode: 'cash', amountReceived: '', payLater: false, notes: ''
+  };
+}
+
+function t(key) {
+  const lang = state.settings.language === 'mr' ? 'mr' : 'en';
+  return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
+}
+
+function esc(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function number(value, fallback = 0) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function money(value) {
+  return `₹${number(value).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function plainMoney(value) {
+  return number(value).toFixed(2);
+}
+
+function todayIso() {
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  return new Date(now.getTime() - offset * 60000).toISOString().slice(0, 10);
+}
+
+function firstDayOfMonthIso() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+}
+
+function isoDate(value) {
+  if (!value) return '';
+  return String(value).slice(0, 10);
+}
+
+function displayDate(value, withTime = false) {
+  if (!value) return '—';
+  const date = new Date(value.includes('T') ? value : `${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat(state.settings.language === 'mr' ? 'mr-IN' : 'en-IN', withTime
+    ? { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }
+    : { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+}
+
+function displayName(item) {
+  if (!item) return '';
+  return state.settings.language === 'mr' ? (item.nameMr || item.nameEn) : (item.nameEn || item.nameMr);
+}
+
+function categoryLabel(category) {
+  return category === 'beverage' ? t('beverage') : t('food');
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn('Could not save data', error);
+    showToast('Storage is full. Download a backup and remove old data.', 'error');
+  }
+
+  // Firebase is an optional mirror. Local storage remains the immediate write
+  // path so the counter never blocks on a weak connection.
+  if (!applyingRemoteState && window.OrigoFirebase?.connected) {
+    window.OrigoFirebase.saveState(state).then(() => {
+      cloudSync.lastSync = new Date().toISOString();
+      cloudSync.status = 'connected';
+    }).catch(error => {
+      cloudSync.status = 'error';
+      cloudSync.error = error?.message || 'Cloud save failed.';
+      console.warn('Firebase save failed; local data is still safe.', error);
+      render();
+    });
+  }
+}
+
+function getActiveMenu() {
+  return state.menu.filter(item => item.active !== false);
+}
+
+function getMenuItem(id) {
+  return state.menu.find(item => item.id === id);
+}
+
+function calculateBilling() {
+  const cartItems = billingDraft.cart.map(line => {
+    const item = getMenuItem(line.id);
+    if (!item) return null;
+    const qty = Math.max(1, Math.floor(number(line.qty, 1)));
+    return { ...item, qty, lineTotal: number(item.price) * qty };
+  }).filter(Boolean);
+  const subtotal = cartItems.reduce((sum, item) => sum + item.lineTotal, 0);
+  const rawDiscount = billingDraft.discount === '' ? number(state.settings.defaultDiscount) : number(billingDraft.discount);
+  const discount = Math.min(Math.max(rawDiscount, 0), subtotal);
+  const taxable = Math.max(subtotal - discount, 0);
+  const gstRate = Math.max(number(state.settings.gstTax), 0);
+  const gst = taxable * gstRate / 100;
+  const total = taxable + gst;
+  let received;
+  if (billingDraft.payLater) received = 0;
+  else if (billingDraft.paymentMode === 'upi') received = total;
+  else if (billingDraft.amountReceived === '') received = total;
+  else received = Math.max(number(billingDraft.amountReceived), 0);
+  const change = Math.max(received - total, 0);
+  const due = Math.max(total - received, 0);
+  const status = due <= 0.005 ? 'paid' : (received > 0 ? 'partial' : 'due');
+  return { cartItems, subtotal, discount, taxable, gstRate, gst, total, received, change, due, status };
+}
+
+function formatStatus(status) {
+  if (status === 'paid') return `<span class="status status-paid">${esc(t('paid'))}</span>`;
+  if (status === 'partial') return `<span class="status status-partial">${esc(t('partial'))}</span>`;
+  return `<span class="status status-due">${esc(t('dueStatus'))}</span>`;
+}
+
+function cloudStatusLabel() {
+  const mr = state.settings.language === 'mr';
+  if (cloudSync.status === 'connected') return mr ? 'Firebase sync सुरू' : 'Firebase synced';
+  if (cloudSync.status === 'connecting') return mr ? 'Firebase जोडत आहे' : 'Connecting Firebase';
+  if (cloudSync.status === 'error') return mr ? 'लोकल मोड · Firebase त्रुटी' : 'Local mode · Firebase error';
+  return mr ? 'या डिव्हाइसवर सेव्ह' : 'Saved on this device';
+}
+
+function renderCloudBadge() {
+  const tone = cloudSync.status === 'connected' ? 'cloud-online' : cloudSync.status === 'error' ? 'cloud-error' : 'cloud-local';
+  return `<span class="cloud-badge ${tone}" title="${esc(cloudSync.error || cloudStatusLabel())}"><span class="cloud-badge-dot"></span>${esc(cloudStatusLabel())}</span>`;
+}
+
+function tabLabel(view) {
+  const labels = { dashboard: t('dashboard'), billing: t('billing'), inventory: t('inventory'), menu: t('menuTab'), history: t('historyTab'), coupons: t('couponTab'), reports: t('reports'), settings: t('settings') };
+  return labels[view] || view;
+}
+
+function renderWorkTabs() {
+  return `<div class="work-tabs" role="tablist" aria-label="${esc(t('openTabs'))}">${openTabs.map(view => `<button class="work-tab ${session.view === view ? 'active' : ''}" data-action="navigate" data-view="${view}" role="tab" aria-selected="${session.view === view}"><span>${esc(tabLabel(view))}</span>${view !== 'dashboard' ? `<span class="work-tab-close" data-action="close-tab" data-view="${view}" title="${esc(t('closeTab'))}">×</span>` : ''}</button>`).join('')}<button class="work-tab-more" data-action="show-view-menu">＋ ${esc(t('more'))}</button></div>`;
+}
+
+function renderShortcutBar() {
+  const shortcuts = [
+    { key: 'F1', view: 'inventory', icon: '📦', label: t('shortcutInventory') },
+    { key: 'F2', view: 'billing', icon: '🧾', label: t('shortcutNewBill') },
+    { key: 'F3', view: 'history', icon: '▦', label: t('shortcutHistory') },
+    { key: 'F4', view: 'menu', icon: '☷', label: t('shortcutMenu') },
+    { key: 'F6', view: 'coupons', icon: '🎟', label: t('shortcutCoupons') }
+  ];
+  return `<div class="shortcut-bar" aria-label="${esc(t('shortcuts'))}"><span class="shortcut-caption">${esc(t('shortcuts'))}</span>${shortcuts.map(item => `<button class="shortcut-button" data-action="navigate" data-view="${item.view}" title="${item.key}"><kbd>${item.key}</kbd><span>${item.icon} ${esc(item.label)}</span></button>`).join('')}</div>`;
+}
+
+function render() {
+  document.getElementById('topbar').innerHTML = renderTopbar();
+  document.getElementById('sidebar').innerHTML = renderSidebar();
+  const main = document.getElementById('main-content');
+  let page = '';
+  if (session.view === 'billing') page = renderBilling();
+  else if (session.view === 'menu') page = renderMenu();
+  else if (session.view === 'inventory') page = renderInventory();
+  else if (session.view === 'history') page = renderBillHistory();
+  else if (session.view === 'coupons') page = renderCouponQueue();
+  else if (session.view === 'reports') page = renderReports();
+  else if (session.view === 'settings') page = renderSettings();
+  else page = renderDashboard();
+  main.innerHTML = renderWorkTabs() + renderShortcutBar() + page;
+  renderModal();
+  if (!session.role) renderAuthGate();
+}
+
+function renderTopbar() {
+  const logo = state.settings.logo ? `<img src="${esc(state.settings.logo)}" alt="Logo">` : '☀';
+  const role = session.role === 'owner' ? t('owner') : t('staff');
+  const roleIcon = session.role === 'owner' ? '◈' : '●';
+  return `
+    <div class="brand">
+      <div class="brand-mark">${logo}</div>
+      <div class="brand-copy">
+        <div class="brand-name">${esc(state.settings.courtName || 'Origo Breakfast Food Court')}</div>
+        <div class="brand-subtitle">${esc(t('selfService'))} · ${esc(displayDate(todayIso()))}</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      ${renderCloudBadge()}
+      <div class="lang-toggle" aria-label="Language">
+        <button class="${state.settings.language === 'en' ? 'active' : ''}" data-action="language" data-lang="en">EN</button>
+        <button class="${state.settings.language === 'mr' ? 'active' : ''}" data-action="language" data-lang="mr">मराठी</button>
+      </div>
+      ${session.role ? `<div class="user-chip"><div class="user-avatar">${roleIcon}</div><div class="user-copy"><div class="user-name">${esc(role)}</div><div class="user-role">${session.role === 'owner' ? 'Full access' : 'Billing & inventory'}</div></div></div><button class="btn btn-ghost btn-small" data-action="logout">↪ ${esc(t('logout'))}</button>` : ''}
+    </div>`;
+}
+
+function renderSidebar() {
+  const staffViews = ['dashboard', 'billing', 'inventory', 'menu', 'history', 'coupons'];
+  const ownerViews = ['reports', 'settings'];
+  const available = session.role === 'owner' ? [...staffViews, ...ownerViews] : staffViews;
+  const visible = openTabs.filter(view => available.includes(view));
+  const labels = { dashboard: t('dashboard'), billing: t('billing'), inventory: t('inventory'), menu: t('menuTab'), history: t('historyTab'), coupons: t('couponTab'), reports: t('reports'), settings: t('settings') };
+  return `<div class="nav-label">${esc(t('foodCourt'))}</div><nav class="nav-list" aria-label="Open tabs">${visible.map(view => `<button class="nav-button ${session.view === view ? 'active' : ''}" data-action="navigate" data-view="${view}"><span class="nav-icon">${view === 'dashboard' ? '⌂' : view === 'billing' ? '▣' : view === 'inventory' ? '▤' : view === 'menu' ? '☷' : view === 'history' ? '▦' : view === 'coupons' ? '🎟' : view === 'reports' ? '▥' : '⚙'}</span><span>${esc(labels[view])}</span></button>`).join('')}<button class="nav-button" data-action="show-view-menu"><span class="nav-icon">＋</span><span>${esc(t('more'))}</span></button></nav><div class="sidebar-foot"><div class="connection-note"><span class="connection-dot ${cloudSync.status === 'connected' ? 'cloud-dot-online' : cloudSync.status === 'error' ? 'cloud-dot-error' : ''}"></span><span>${esc(cloudStatusLabel())}. Use More to open another tab.</span></div></div>`;
+}
+function inventoryReviewStatus() {
+  const review = state.inventoryReview || { lastAt: null, lastBillCount: 0 };
+  const billsSince = Math.max(0, state.bills.length - number(review.lastBillCount));
+  const elapsedHours = review.lastAt ? Math.max(0, (Date.now() - new Date(review.lastAt).getTime()) / 3600000) : 999;
+  const due = !review.lastAt || elapsedHours >= 4 || billsSince >= 50;
+  const hoursLeft = due ? 0 : Math.max(0, Math.ceil(4 - elapsedHours));
+  return { due, billsSince, hoursLeft, lastAt: review.lastAt };
+}
+
+function saveInventoryUsageForm(form) {
+  const usedItems = [];
+  state.inventory = state.inventory.map(raw => {
+    const used = Math.min(Math.max(number(form.elements[`used-${raw.id}`]?.value, 0), 0), Math.max(number(raw.remainingQty), 0));
+    if (used > 0) usedItems.push({ id: raw.id, nameEn: raw.nameEn, nameMr: raw.nameMr, unit: raw.unit, usedQty: used, remainingQty: Math.max(0, number(raw.remainingQty) - used) });
+    return used > 0 ? { ...raw, remainingQty: Math.max(0, number(raw.remainingQty) - used) } : raw;
+  });
+  state.inventoryReview = { lastAt: new Date().toISOString(), lastBillCount: state.bills.length };
+  if (!Array.isArray(state.inventoryUsageLog)) state.inventoryUsageLog = [];
+  state.inventoryUsageLog.unshift({ at: state.inventoryReview.lastAt, bills: state.bills.length, items: usedItems });
+  state.inventoryUsageLog = state.inventoryUsageLog.slice(0, 20);
+  saveState(); render(); showToast(usedItems.length ? 'Stock usage saved.' : 'Stock check completed.', 'success');
+}
+
+function renderStaffStockReviewCard() {
+  const review = inventoryReviewStatus();
+  const latest = Array.isArray(state.inventoryUsageLog) ? state.inventoryUsageLog[0] : null;
+  const usageText = latest?.items?.length ? latest.items.map(item => `${item.nameMr || item.nameEn}: ${number(item.usedQty)} ${item.unit}`).join(' · ') : 'No usage entered yet.';
+  return `<section class="card card-pad stock-review-card ${review.due ? 'review-due' : ''}"><div class="action-row"><div><h2 class="card-title">${review.due ? '⚠ ' : '✓ '}${esc(t('stockReview'))}</h2><p class="card-subtitle">${review.due ? 'Update milk and raw material usage now.' : `Next update in ${review.hoursLeft} hours or ${Math.max(0, 50 - review.billsSince)} bills.`}</p></div><button class="btn ${review.due ? 'btn-primary' : 'btn-secondary'} btn-small" data-action="navigate" data-view="inventory">📦 ${esc(review.due ? t('updateStock') : t('inventory'))}</button></div><div class="usage-summary"><span>Since last update: <strong>${review.billsSince} bills</strong></span><span>Last used: <strong>${esc(usageText)}</strong></span></div></section>`;
+}
+
+function renderStaffDashboard() {
+  const lowStockItems = state.inventory.filter(item => number(item.remainingQty) <= number(item.reorderLevel));
+  const openCoupons = state.bills.filter(bill => bill.couponStatus !== 'served').slice().sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))).slice(0, 8);
+  return `<div class="page">
+    <div class="page-header"><div><p class="eyebrow">${esc(t('staff'))} · ${esc(t('selfService'))}</p><h1 class="page-title">${esc(t('welcome'))} 👋</h1><p class="page-description">Tap a button to start billing. This staff view is for billing, coupons and low-stock checks.</p></div><div class="header-actions"><button class="btn btn-primary" data-action="navigate" data-view="billing">＋ ${esc(t('newBill'))}</button></div></div>
+    <section class="card hero-card"><div class="hero-content"><p class="eyebrow">${esc(t('selfService'))}</p><h2>Tap. Bill. Coupon. Done.</h2><p>${esc(t('tapItem'))} The coupon shows only food, beverages and quantities. Give the customer the matching token.</p><div class="hero-actions"><button class="btn btn-primary" data-action="navigate" data-view="billing">＋ ${esc(t('quickSale'))}</button><button class="btn btn-secondary" data-action="navigate" data-view="inventory">📦 ${esc(t('inventory'))}</button></div></div></section>
+    ${renderStaffStockReviewCard()}
+    <div class="dashboard-grid staff-dashboard-grid" style="margin-top:18px"><div class="dashboard-left"><section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">⚠ ${esc(t('lowStock'))}</h2><p class="card-subtitle">Only raw materials that need attention are shown here.</p></div><span class="chip ${lowStockItems.length ? '' : 'blue'}">${lowStockItems.length}</span></div>${lowStockItems.length ? `<div class="table-wrap"><table><thead><tr><th>${esc(t('rawMaterial'))}</th><th>${esc(t('remainingQty'))}</th><th>${esc(t('reorderLevel'))}</th><th>${esc(t('status'))}</th></tr></thead><tbody>${lowStockItems.map(item => `<tr><td><div class="td-strong">${esc(displayName(item))}</div><div class="tiny muted">${esc(item.nameEn || '')}</div></td><td class="td-strong">${number(item.remainingQty).toLocaleString('en-IN')} ${esc(item.unit)}</td><td>${number(item.reorderLevel).toLocaleString('en-IN')} ${esc(item.unit)}</td><td>${number(item.remainingQty) <= 0 ? '<span class="status status-due">' + esc(t('out')) + '</span>' : '<span class="status status-partial">' + esc(t('low')) + '</span>'}</td></tr>`).join('')}</tbody></table></div>` : `<div class="empty-state"><div class="empty-icon">✅</div>No low inventory right now.</div>`}</section></div><div class="dashboard-right"><section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">🎟 ${esc(t('servedLabel'))}</h2><p class="card-subtitle">${esc(t('openCouponHint'))}</p></div><span class="chip blue">${openCoupons.length}</span></div>${openCoupons.length ? `<div class="table-wrap"><table><thead><tr><th>${esc(t('coupon'))}</th><th>${esc(t('qty'))}</th><th>${esc(t('actions'))}</th></tr></thead><tbody>${openCoupons.map(bill => `<tr><td class="td-strong">${esc(bill.couponNo)}</td><td>${bill.items.reduce((s, i) => s + number(i.qty), 0)}</td><td><button class="btn btn-secondary btn-small" data-action="mark-served" data-id="${esc(bill.id)}">✓ ${esc(t('markServed'))}</button></td></tr>`).join('')}</tbody></table></div>` : `<div class="empty-state"><div class="empty-icon">✅</div>No open coupons.</div>`}</section><section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">${esc(t('quickActions'))}</h2><p class="card-subtitle">Simple counter actions.</p></div></div><div class="quick-grid"><button class="quick-action" data-action="navigate" data-view="billing"><span class="quick-icon">🧾</span><span><span class="quick-label">${esc(t('newBill'))}</span><span class="quick-sub">${esc(t('tapItem'))}</span></span></button><button class="quick-action" data-action="navigate" data-view="inventory"><span class="quick-icon">📦</span><span><span class="quick-label">${esc(t('inventory'))}</span><span class="quick-sub">Update remaining stock</span></span></button><button class="quick-action" data-action="open-help"><span class="quick-icon">❔</span><span><span class="quick-label">How it works</span><span class="quick-sub">Counter guide</span></span></button></div></section></div></div>
+  </div>`;
+}
+
+function renderDashboard() {
+  if (session.role !== 'owner') return renderStaffDashboard();
+  const today = todayIso();
+  const todayBills = state.bills.filter(bill => isoDate(bill.date || bill.createdAt) === today);
+  const todayCollection = todayBills.reduce((sum, bill) => sum + number(bill.amountReceived), 0);
+  const todayGross = todayBills.reduce((sum, bill) => sum + number(bill.grandTotal), 0);
+  const allDue = state.bills.reduce((sum, bill) => sum + number(bill.due), 0);
+  const lowStockItems = state.inventory.filter(item => number(item.remainingQty) <= number(item.reorderLevel));
+  const recent = [...state.bills].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))).slice(0, 8);
+  const cash = todayBills.filter(b => b.paymentMode === 'cash').reduce((sum, b) => sum + number(b.amountReceived), 0);
+  const upi = todayBills.filter(b => b.paymentMode === 'upi').reduce((sum, b) => sum + number(b.amountReceived), 0);
+  const due = todayBills.reduce((sum, b) => sum + number(b.due), 0);
+  const maxPayment = Math.max(cash, upi, due, 1);
+  const openCoupons = state.bills.filter(b => b.couponStatus !== 'served').slice().sort((a,b) => String(b.createdAt).localeCompare(String(a.createdAt))).slice(0, 7);
+  const langGreeting = state.settings.language === 'mr' ? 'नमस्कार' : t('welcome');
+
+  return `<div class="page">
+    <div class="page-header">
+      <div><p class="eyebrow">${esc(t('today'))} · ${esc(displayDate(today))}</p><h1 class="page-title">${esc(langGreeting)}, ${esc(session.role === 'owner' ? t('owner') : t('staff'))} 👋</h1><p class="page-description">${esc(t('selfService'))}. Track collections, open dues, coupons and stock from one simple screen.</p></div>
+      <div class="header-actions"><button class="btn btn-primary" data-action="navigate" data-view="billing">＋ ${esc(t('newBill'))}</button>${session.role === 'owner' ? `<button class="btn btn-secondary" data-action="navigate" data-view="reports">▥ ${esc(t('viewReports'))}</button>` : ''}</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">${esc(t('collections'))}</span><span class="kpi-icon">₹</span></div><div class="kpi-value">${money(todayCollection)}</div><div class="kpi-foot">${money(todayGross)} gross · ${todayBills.length} ${esc(t('bills').toLowerCase())}</div></div>
+      <div class="card kpi-card green"><div class="kpi-top"><span class="kpi-label">${esc(t('bills'))}</span><span class="kpi-icon">▣</span></div><div class="kpi-value">${todayBills.length}</div><div class="kpi-foot">${esc(t('today'))}</div></div>
+      <div class="card kpi-card red"><div class="kpi-top"><span class="kpi-label">${esc(t('openDues'))}</span><span class="kpi-icon">!</span></div><div class="kpi-value">${money(allDue)}</div><div class="kpi-foot">All open bills</div></div>
+      <div class="card kpi-card blue"><div class="kpi-top"><span class="kpi-label">${esc(t('lowStock'))}</span><span class="kpi-icon">▥</span></div><div class="kpi-value">${lowStockItems.length}</div><div class="kpi-foot">${state.inventory.length} raw materials tracked</div></div>
+    </div>
+    <div class="dashboard-grid">
+      <div class="dashboard-left">
+        <section class="card hero-card"><div class="hero-content"><p class="eyebrow">${esc(t('selfService'))}</p><h2>Tap. Bill. Coupon. Done.</h2><p>${esc(t('tapItem'))} The coupon shows only the food, beverages and quantities, while the complete prices and tax stay on the bill.</p><div class="hero-actions"><button class="btn btn-primary" data-action="navigate" data-view="billing">＋ ${esc(t('quickSale'))}</button><button class="btn btn-secondary" data-action="print-last">🖨 ${esc(t('print'))}</button></div></div></section>
+        <section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">${esc(t('recentBills'))}</h2><p class="card-subtitle">Bills and synced coupon tokens from the latest orders.</p></div><span class="date-badge">● ${esc(displayDate(today))}</span></div>
+          ${recent.length ? `<div class="table-wrap"><table><thead><tr><th>${esc(t('billNumber'))}</th><th>${esc(t('customer'))}</th><th>${esc(t('coupon'))}</th><th>${esc(t('amount'))}</th><th>${esc(t('status'))}</th><th>${esc(t('actions'))}</th></tr></thead><tbody>${recent.map(renderRecentBillRow).join('')}</tbody></table></div>` : `<div class="empty-state"><div class="empty-icon">🧾</div>${esc(t('noBills'))}</div>`}
+        </section>
+      </div>
+      <div class="dashboard-right">
+        <section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">${esc(t('payment'))}</h2><p class="card-subtitle">Today’s collection by mode.</p></div><span class="chip">${money(todayCollection)}</span></div><div class="payment-bars"><div class="payment-line"><div class="payment-line-top"><span>💵 ${esc(t('cash'))}</span><strong>${money(cash)}</strong></div><div class="payment-track"><div class="payment-fill" style="width:${cash / maxPayment * 100}%"></div></div></div><div class="payment-line"><div class="payment-line-top"><span>📱 ${esc(t('upi'))}</span><strong>${money(upi)}</strong></div><div class="payment-track"><div class="payment-fill upi" style="width:${upi / maxPayment * 100}%"></div></div></div><div class="payment-line"><div class="payment-line-top"><span>⏳ ${esc(t('due'))}</span><strong>${money(due)}</strong></div><div class="payment-track"><div class="payment-fill due" style="width:${due / maxPayment * 100}%"></div></div></div></div></section>
+        <section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">${esc(t('quickActions'))}</h2><p class="card-subtitle">One tap for common counter work.</p></div></div><div class="quick-grid"><button class="quick-action" data-action="navigate" data-view="billing"><span class="quick-icon">🧾</span><span><span class="quick-label">${esc(t('newBill'))}</span><span class="quick-sub">${esc(t('tapItem'))}</span></span></button><button class="quick-action" data-action="navigate" data-view="inventory"><span class="quick-icon">📦</span><span><span class="quick-label">${esc(t('inventoryAdd'))}</span><span class="quick-sub">Update stock</span></span></button><button class="quick-action" data-action="navigate" data-view="reports"> <span class="quick-icon">📊</span><span><span class="quick-label">${esc(t('viewReports'))}</span><span class="quick-sub">Owner download</span></span></button><button class="quick-action" data-action="open-help"><span class="quick-icon">❔</span><span><span class="quick-label">How it works</span><span class="quick-sub">Counter guide</span></span></button></div></section>
+        <section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">${esc(t('servedLabel'))}</h2><p class="card-subtitle">${esc(t('openCouponHint'))}</p></div><span class="chip blue">${openCoupons.length}</span></div>${openCoupons.length ? `<div class="table-wrap"><table><thead><tr><th>${esc(t('coupon'))}</th><th>${esc(t('qty'))}</th><th>${esc(t('actions'))}</th></tr></thead><tbody>${openCoupons.map(bill => `<tr><td class="td-strong">${esc(bill.couponNo)}</td><td>${bill.items.reduce((s,i)=>s+number(i.qty),0)}</td><td><button class="btn btn-secondary btn-small" data-action="mark-served" data-id="${esc(bill.id)}">✓ ${esc(t('markServed'))}</button></td></tr>`).join('')}</tbody></table></div>` : `<div class="empty-state"><div class="empty-icon">✅</div>${esc(t('noBills'))}</div>`}</section>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderRecentBillRow(bill) {
+  return `<tr><td><div class="td-strong">${esc(bill.billNo)}</div><div class="tiny muted">${esc(displayDate(bill.date || bill.createdAt, true))}</div></td><td>${esc(bill.customerName || 'Walk-in')}</td><td><span class="chip blue">${esc(bill.couponNo || '—')}</span></td><td class="td-strong">${money(bill.grandTotal)}</td><td>${formatStatus(bill.status)}</td><td><div class="header-actions"><button class="icon-btn" title="${esc(t('printCombined'))}" data-action="print-bill" data-id="${esc(bill.id)}">🖨</button></div></td></tr>`;
+}
+
+function renderBilling() {
+  const calc = calculateBilling();
+  const activeMenu = getActiveMenu();
+  const filtered = activeMenu.filter(item => {
+    const term = menuSearch.trim().toLowerCase();
+    const matchesSearch = !term || `${item.nameEn} ${item.nameMr}`.toLowerCase().includes(term);
+    const matchesCategory = menuCategory === 'all' || item.category === menuCategory;
+    return matchesSearch && matchesCategory;
+  });
+  const defaultDiscount = state.settings.defaultDiscount ? ` · Default ${money(state.settings.defaultDiscount)}` : '';
+  const cashValue = billingDraft.amountReceived === '' ? '' : esc(billingDraft.amountReceived);
+  return `<div class="page">
+    <div class="page-header"><div><p class="eyebrow">${esc(t('quickSale'))} · ${esc(t('selfService'))}</p><h1 class="page-title">${esc(t('billing'))}</h1><p class="page-description">${esc(t('tapItem'))} The bill and coupon number are generated together.</p></div><div class="header-actions"><span class="date-badge">🗓 ${esc(displayDate(todayIso()))}</span><button class="btn btn-secondary" data-action="navigate" data-view="menu">☷ ${esc(t('menuTab'))}</button><button class="btn btn-secondary" data-action="clear-cart">↺ ${esc(t('clear'))}</button></div></div>
+    <div class="billing-layout">
+      <section class="card billing-panel cart-panel sticky-card">
+        <div class="card-title-row"><div><h2 class="card-title">1. ${esc(t('details'))}</h2><p class="card-subtitle">Customer and payment details.</p></div><span class="chip">${calc.cartItems.length} ${esc(t('items').toLowerCase())}</span></div>
+        <div class="form-grid"><div class="form-field full"><label class="form-label" for="customer-name">${esc(t('customerName'))} *</label><input id="customer-name" data-draft="customerName" value="${esc(billingDraft.customerName)}" placeholder="e.g. Anjali Patil" autocomplete="name"></div><div class="form-field full"><label class="form-label" for="mobile-number">${esc(t('mobile'))}</label><input id="mobile-number" data-draft="mobile" value="${esc(billingDraft.mobile)}" placeholder="9876543210" inputmode="tel" maxlength="15"><span class="form-hint">${esc(t('mobileHint'))}</span></div><div class="form-field full"><label class="form-label" for="order-notes">${esc(t('orderNotes'))} <span class="muted">(${esc(t('optional'))})</span></label><textarea id="order-notes" rows="2" data-draft="notes" placeholder="${esc(t('optional'))}">${esc(billingDraft.notes)}</textarea></div></div>
+        <div class="divider"></div><div class="card-title-row"><div><h2 class="card-title">2. ${esc(t('items'))}</h2><p class="card-subtitle">Only selected quantities print on the coupon.</p></div></div>
+        <div id="cart-list" class="cart-list">${calc.cartItems.length ? calc.cartItems.map(renderCartRow).join('') : `<div class="no-results"><div class="empty-icon">🛒</div>${esc(t('noItems'))}<br><span class="tiny">${esc(t('tapItem'))}</span></div>`}</div>
+        <div class="divider"></div><div class="bill-totals" id="billing-totals">${renderBillingTotals(calc)}</div>
+        <div class="divider"></div><div class="card-title-row"><div><h2 class="card-title">3. ${esc(t('payment'))}</h2><p class="card-subtitle">${esc(t('cashHint'))}</p></div></div>
+        <div class="payment-switch"><div class="payment-option"><input type="radio" id="pay-cash" name="payment-mode" data-draft="paymentMode" value="cash" ${billingDraft.paymentMode === 'cash' ? 'checked' : ''}><label for="pay-cash">💵 ${esc(t('cash'))}</label></div><div class="payment-option"><input type="radio" id="pay-upi" name="payment-mode" data-draft="paymentMode" value="upi" ${billingDraft.paymentMode === 'upi' ? 'checked' : ''}><label for="pay-upi">📱 ${esc(t('upi'))}</label></div></div>
+        ${billingDraft.paymentMode === 'cash' ? `<div class="amount-received-row" style="margin-top:11px"><div class="form-field"><label class="form-label" for="amount-received">${esc(t('amountReceived'))}</label><div class="input-with-prefix"><span>₹</span><input id="amount-received" data-draft="amountReceived" value="${cashValue}" placeholder="${plainMoney(calc.total)}" inputmode="decimal"></div></div><button class="btn btn-secondary" data-action="fill-total">= ${esc(t('total'))}</button></div><span class="form-hint" style="display:block;margin-top:6px">${esc(t('cashHint'))}</span>` : `<div class="inline-alert info" style="margin-top:11px">📱 UPI payment is recorded as received for ${money(calc.total)}.</div>`}
+        <div class="pay-status-row"><label class="checkbox-label"><input type="checkbox" data-draft="payLater" ${billingDraft.payLater ? 'checked' : ''}> ${esc(t('payLater'))}</label><span class="small muted">${esc(t('dueHint'))}</span></div>
+        <div id="change-box">${renderChangeBox(calc)}</div>
+        <div class="bill-actions"><button class="btn btn-primary" id="checkout-btn" data-action="save-bill" ${calc.cartItems.length ? '' : 'disabled'}>✓ ${esc(t('saveBill'))}</button></div><div class="shortcut-note">F1 Inventory · F2 New bill · F3 Bill history · F4 Menu</div>
+      </section>
+      <section class="card billing-panel menu-panel">
+        <div class="card-title-row"><div><h2 class="card-title">${esc(`${t('food')} & ${t('beverages')}`)}</h2><p class="card-subtitle">${esc(t('addToBill'))} · bilingual menu</p></div><span class="chip">${activeMenu.length}</span></div>
+        <div class="menu-toolbar"><div class="menu-search"><span>⌕</span><input id="menu-search" data-menu-search value="${esc(menuSearch)}" placeholder="${esc(t('searchMenu'))}" autocomplete="off"></div><div class="category-pills"><button class="pill ${menuCategory === 'all' ? 'active' : ''}" data-action="menu-category" data-category="all">${esc(t('allCategories'))}</button><button class="pill ${menuCategory === 'food' ? 'active' : ''}" data-action="menu-category" data-category="food">🍽 ${esc(t('foodCategory'))}</button><button class="pill ${menuCategory === 'beverage' ? 'active' : ''}" data-action="menu-category" data-category="beverage">☕ ${esc(t('beverageCategory'))}</button></div></div>
+        <div id="menu-grid" class="menu-grid">${filtered.length ? filtered.map(renderMenuItemButton).join('') : `<div class="no-results" style="grid-column:1/-1">${esc(t('noItems'))}</div>`}</div>
+        <div class="inline-alert success">✓ <span><strong>Coupon sync:</strong> every saved bill receives one matching coupon token. Amounts never appear on the coupon.</span></div>
+      </section>
+    </div>
+  </div>`;
+}
+
+function renderCartRow(item) {
+  return `<div class="cart-row"><div><div class="cart-item-name">${esc(item.nameEn)}</div><div class="cart-item-meta">${esc(item.nameMr || '')} · ${money(item.price)} × ${item.qty}</div></div><div class="qty-control"><button data-action="cart-minus" data-id="${esc(item.id)}" aria-label="Decrease">−</button><span>${item.qty}</span><button data-action="cart-plus" data-id="${esc(item.id)}" aria-label="Increase">＋</button></div><div class="cart-price">${money(item.lineTotal)}<button class="cart-remove" data-action="cart-remove" data-id="${esc(item.id)}" aria-label="Remove">×</button></div></div>`;
+}
+
+function renderMenuItemButton(item) {
+  return `<button class="menu-item" data-action="add-menu" data-id="${esc(item.id)}" aria-label="${esc(t('addToBill'))} ${esc(displayName(item))}"><span><span class="menu-item-top"><span class="menu-item-icon ${item.category === 'beverage' ? 'beverage' : ''}">${item.icon || (item.category === 'beverage' ? '☕' : '🍽')}</span><span class="menu-item-category">${esc(categoryLabel(item.category))}</span></span><span class="menu-item-name">${esc(item.nameEn)}</span><span class="menu-item-mr">${esc(item.nameMr || '')}</span></span><span class="menu-item-bottom"><span class="menu-item-price">${money(item.price)}</span><span class="add-mark">＋</span></span></button>`;
+}
+
+function renderBillingTotals(calc) {
+  return `<div class="total-line"><span>${esc(t('subtotal'))}</span><strong>${money(calc.subtotal)}</strong></div><div class="total-line"><span>${esc(t('discount'))}</span><strong>− ${money(calc.discount)}</strong></div><div class="total-line"><span>${esc(t('gst'))} (${plainMoney(calc.gstRate)}%)</span><strong>${money(calc.gst)}</strong></div><div class="total-line grand"><span>${esc(t('grandTotal'))}</span><strong>${money(calc.total)}</strong></div>`;
+}
+
+function renderChangeBox(calc) {
+  if (calc.due > 0.005) return `<div class="change-box due-box"><span>⏳ ${esc(t('due'))}</span><strong>${money(calc.due)}</strong></div>`;
+  return `<div class="change-box"><span>↩ ${esc(t('change'))}</span><strong>${money(calc.change)}</strong></div>`;
+}
+
+function renderMenu() {
+  const editing = menuEditingId ? state.menu.find(item => item.id === menuEditingId) : null;
+  const item = editing || { nameEn: '', nameMr: '', category: 'food', price: '', icon: '🍽', active: true };
+  return `<div class="page"><div class="page-header"><div><p class="eyebrow">${esc(t('staff'))} · ${esc(t('menuTab'))}</p><h1 class="page-title">${esc(t('menuTab'))}</h1><p class="page-description">Add or change food, beverages and prices. These buttons appear immediately on the billing screen.</p></div><div class="header-actions"><button class="btn btn-primary" data-action="navigate" data-view="billing">＋ ${esc(t('newBill'))}</button></div></div><div class="settings-grid"><section class="card settings-card"><div class="card-title-row"><div><h2 class="card-title">${esc(editing ? t('editMenu') : t('addMenuItem'))}</h2><p class="card-subtitle">Staff can keep the tap menu current without opening owner settings.</p></div></div><form id="menu-form"><div class="form-grid"><div class="form-field"><label class="form-label">${esc(t('itemEnglish'))} *</label><input name="nameEn" required value="${esc(item.nameEn)}" placeholder="Kanda Poha"></div><div class="form-field"><label class="form-label">${esc(t('itemMarathi'))}</label><input name="nameMr" value="${esc(item.nameMr)}" placeholder="कांदा पोहे"></div><div class="form-field"><label class="form-label">${esc(t('category'))}</label><select name="category"><option value="food" ${item.category === 'food' ? 'selected' : ''}>🍽 ${esc(t('foodCategory'))}</option><option value="beverage" ${item.category === 'beverage' ? 'selected' : ''}>☕ ${esc(t('beverageCategory'))}</option></select></div><div class="form-field"><label class="form-label">${esc(t('price'))} *</label><div class="input-with-prefix"><span>₹</span><input type="number" name="price" min="0" step="0.01" required value="${item.price === '' ? '' : esc(item.price)}"></div></div><div class="form-field"><label class="form-label">Icon / emoji</label><input name="icon" value="${esc(item.icon || '🍽')}" maxlength="3" placeholder="🍽"></div></div><div class="header-actions" style="margin-top:14px"><button class="btn btn-primary" type="submit">✓ ${esc(editing ? t('saveMenu') : t('addMenuItem'))}</button>${editing ? `<button class="btn btn-secondary" type="button" data-action="cancel-menu-edit">${esc(t('cancel'))}</button>` : ''}</div></form></section><section class="card settings-card"><div class="card-title-row"><div><h2 class="card-title">${esc(t('menuManagement'))}</h2><p class="card-subtitle">${state.menu.length} ${esc(t('records'))} · tap Edit to change a price.</p></div></div><div>${state.menu.map(renderMenuAdminRow).join('')}</div></section></div></div>`;
+}
+
+function renderInventorySummary() {
+  const low = state.inventory.filter(item => number(item.remainingQty) > 0 && number(item.remainingQty) <= number(item.reorderLevel)).length;
+  const out = state.inventory.filter(item => number(item.remainingQty) <= 0).length;
+  const review = inventoryReviewStatus();
+  const latest = Array.isArray(state.inventoryUsageLog) ? state.inventoryUsageLog[0] : null;
+  return `<div class="kpi-grid inventory-summary-grid"><div class="card kpi-card blue"><div class="kpi-top"><span class="kpi-label">${esc(t('totalRaw'))}</span><span class="kpi-icon">📦</span></div><div class="kpi-value">${state.inventory.length}</div><div class="kpi-foot">Tracked raw materials</div></div><div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">${esc(t('lowRaw'))}</span><span class="kpi-icon">⚠</span></div><div class="kpi-value">${low}</div><div class="kpi-foot">Needs attention</div></div><div class="card kpi-card red"><div class="kpi-top"><span class="kpi-label">${esc(t('outRaw'))}</span><span class="kpi-icon">!</span></div><div class="kpi-value">${out}</div><div class="kpi-foot">Unavailable items</div></div><div class="card kpi-card ${review.due ? '' : 'green'}"><div class="kpi-top"><span class="kpi-label">${esc(t('reviewDue'))}</span><span class="kpi-icon">${review.due ? '⏱' : '✓'}</span></div><div class="kpi-value">${review.due ? 'NOW' : `${review.hoursLeft}h`}</div><div class="kpi-foot">${review.due ? 'Tap Stock update below' : `${Math.max(0, 50 - review.billsSince)} bills left`} · ${latest?.items?.length || 0} items last updated</div></div></div>`;
+}
+
+function renderInventory() {
+  const editing = inventoryEditingId ? state.inventory.find(item => item.id === inventoryEditingId) : null;
+  const item = editing || { nameEn: '', nameMr: '', unit: 'kg', purchaseDate: todayIso(), purchasedQty: '', remainingQty: '', reorderLevel: '', purchaseCost: '' };
+  const review = inventoryReviewStatus();
+  const usageRows = state.inventory.length ? state.inventory.map(raw => `<tr><td><div class="td-strong">${esc(displayName(raw))}</div><div class="tiny muted">${esc(raw.nameEn || '')}</div></td><td class="td-strong">${number(raw.remainingQty).toLocaleString('en-IN')} ${esc(raw.unit)}</td><td><input type="number" name="used-${esc(raw.id)}" min="0" max="${number(raw.remainingQty)}" step="0.01" placeholder="0" inputmode="decimal"></td></tr>`).join('') : `<tr><td colspan="3"><div class="empty-state">${esc(t('noInventory'))}</div></td></tr>`;
+  return `<div class="page"><div class="page-header"><div><p class="eyebrow">${esc(t('staff'))} · ${esc(t('stock'))}</p><h1 class="page-title">${esc(t('inventoryTitle'))}</h1><p class="page-description">Edit balances directly or enter how much raw material was used in the last stock check.</p></div><div class="header-actions"><button class="btn btn-secondary" data-action="navigate" data-view="billing">＋ ${esc(t('newBill'))}</button></div></div>${renderInventorySummary()}<div class="inventory-grid"><section class="card inventory-form"><div class="card-title-row"><div><h2 class="card-title">${editing ? esc(t('updateRaw')) : esc(t('addRaw'))}</h2><p class="card-subtitle">Purchase date and quantity remaining are saved together.</p></div>${editing ? '<span class="chip blue">Editing</span>' : ''}</div><form id="inventory-form"><div class="form-grid"><div class="form-field"><label class="form-label">${esc(t('rawMaterialName'))} *</label><input name="nameEn" required value="${esc(item.nameEn)}" placeholder="e.g. Milk"></div><div class="form-field"><label class="form-label">${esc(t('itemMarathi'))}</label><input name="nameMr" value="${esc(item.nameMr)}" placeholder="उदा. दूध"></div><div class="form-field"><label class="form-label">${esc(t('unit'))} *</label><input name="unit" required value="${esc(item.unit)}" placeholder="${esc(t('unitExample'))}"></div><div class="form-field"><label class="form-label">${esc(t('purchaseDate'))} *</label><input type="date" name="purchaseDate" required value="${esc(item.purchaseDate || todayIso())}"></div><div class="form-field"><label class="form-label">${esc(t('purchasedQty'))} *</label><input type="number" name="purchasedQty" min="0" step="0.01" required value="${item.purchasedQty === '' ? '' : esc(item.purchasedQty)}"></div><div class="form-field"><label class="form-label">${esc(t('remainingQty'))} *</label><input type="number" name="remainingQty" min="0" step="0.01" required value="${item.remainingQty === '' ? '' : esc(item.remainingQty)}"></div><div class="form-field"><label class="form-label">${esc(t('reorderLevel'))}</label><input type="number" name="reorderLevel" min="0" step="0.01" value="${item.reorderLevel === '' ? '' : esc(item.reorderLevel)}"></div><div class="form-field"><label class="form-label">${esc(t('purchaseCost'))}</label><div class="input-with-prefix"><span>₹</span><input type="number" name="purchaseCost" min="0" step="0.01" value="${item.purchaseCost === '' ? '' : esc(item.purchaseCost)}"></div></div></div><div class="header-actions" style="margin-top:17px"><button class="btn btn-primary" type="submit">✓ ${esc(editing ? t('updateItem') : t('saveItem'))}</button>${editing ? `<button class="btn btn-secondary" type="button" data-action="cancel-inventory-edit">${esc(t('cancel'))}</button>` : ''}</div></form></section><div class="dashboard-left inventory-right-column"><section class="card card-pad stock-usage-card ${review.due ? 'review-due' : ''}"><div class="card-title-row"><div><h2 class="card-title">${review.due ? '⚠ ' : '✓ '}${esc(t('stockReview'))}</h2><p class="card-subtitle">Enter milk, oil, tea or other raw material used since the last check.</p></div><span class="chip ${review.due ? '' : 'blue'}">${review.billsSince}/50</span></div><form id="inventory-usage-form"><div class="table-wrap"><table class="inventory-table"><thead><tr><th>${esc(t('rawMaterial'))}</th><th>${esc(t('remainingQty'))}</th><th>${esc(t('usedQty'))}</th></tr></thead><tbody>${usageRows}</tbody></table></div><div class="action-row" style="margin-top:14px"><span class="form-hint">${review.due ? 'Update now: every 4 hours or 50 bills, whichever comes first.' : `Next check in ${review.hoursLeft} hours or ${Math.max(0, 50 - review.billsSince)} bills.`}</span><button class="btn btn-primary" type="submit">✓ ${esc(t('saveUsage'))}</button></div></form></section><section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">${esc(t('inventory'))}</h2><p class="card-subtitle">${state.inventory.length} ${esc(t('records'))} · tap Edit to change any balance.</p></div><span class="chip">${state.inventory.filter(i => number(i.remainingQty) <= number(i.reorderLevel)).length} ${esc(t('low'))}</span></div>${state.inventory.length ? `<div class="table-wrap"><table class="inventory-table"><thead><tr><th>${esc(t('rawMaterial'))}</th><th>${esc(t('purchaseDate'))}</th><th>${esc(t('purchasedQty'))}</th><th>${esc(t('remainingQty'))}</th><th>${esc(t('stock'))}</th><th>${esc(t('actions'))}</th></tr></thead><tbody>${state.inventory.map(renderInventoryRow).join('')}</tbody></table></div>` : `<div class="empty-state"><div class="empty-icon">📦</div>${esc(t('noInventory'))}</div>`}<div class="inline-alert info">ℹ️ Use the Edit button for a direct correction. Use Stock update above to record consumption.</div></section></div></div></div>`;
+}
+function adjustInventory(id, delta) {
+  const item = state.inventory.find(raw => raw.id === id);
+  if (!item) return;
+  const amount = number(delta);
+  const before = Math.max(0, number(item.remainingQty));
+  const after = Math.max(0, before + amount);
+  const used = Math.max(0, before - after);
+  item.remainingQty = after;
+  if (amount > 0) item.purchasedQty = Math.max(number(item.purchasedQty), after);
+  state.inventoryReview = { lastAt: new Date().toISOString(), lastBillCount: state.bills.length };
+  if (used > 0) {
+    if (!Array.isArray(state.inventoryUsageLog)) state.inventoryUsageLog = [];
+    state.inventoryUsageLog.unshift({ at: state.inventoryReview.lastAt, bills: state.bills.length, items: [{ id: item.id, nameEn: item.nameEn, nameMr: item.nameMr, unit: item.unit, usedQty: used, remainingQty: after }] });
+    state.inventoryUsageLog = state.inventoryUsageLog.slice(0, 20);
+  }
+  saveState(); render(); showToast(`${item.nameEn}: ${amount < 0 ? 'used' : 'added'} ${Math.abs(amount)} ${item.unit}`, 'success');
+}
+
+function renderInventoryRow(item) {
+  const purchased = Math.max(number(item.purchasedQty), 0);
+  const remaining = Math.max(number(item.remainingQty), 0);
+  const percent = purchased ? Math.min(100, remaining / purchased * 100) : 0;
+  const out = remaining <= 0;
+  const low = remaining <= number(item.reorderLevel);
+  const stockClass = out ? 'out' : low ? 'low' : '';
+  return `<tr><td><div class="td-strong">${esc(item.nameEn)}</div><div class="tiny muted">${esc(item.nameMr || '')} · ${esc(item.unit)}</div></td><td>${esc(displayDate(item.purchaseDate))}</td><td>${number(item.purchasedQty).toLocaleString('en-IN')} ${esc(item.unit)}</td><td class="td-strong">${number(item.remainingQty).toLocaleString('en-IN')} ${esc(item.unit)}</td><td><span class="stock-meter"><i class="${stockClass}" style="width:${percent}%"></i></span><span class="tiny ${out ? 'status-due' : low ? 'status-partial' : 'status-paid'}" style="background:transparent;padding:0">${out ? esc(t('out')) : low ? esc(t('low')) : esc(t('available'))}</span></td><td><div class="header-actions"><button class="btn btn-secondary btn-small" data-action="adjust-inventory" data-id="${esc(item.id)}" data-delta="-1">−1</button><button class="btn btn-secondary btn-small" data-action="adjust-inventory" data-id="${esc(item.id)}" data-delta="1">＋1</button><button class="btn btn-primary btn-small" data-action="edit-inventory" data-id="${esc(item.id)}">✎ ${esc(t('edit'))}</button><button class="btn btn-danger btn-small" data-action="delete-inventory" data-id="${esc(item.id)}">×</button></div></td></tr>`;
+}
+
+function reportRangeFromPreset(preset) {
+  const today = new Date(`${todayIso()}T00:00:00`);
+  if (preset === 'today') return { from: todayIso(), to: todayIso() };
+  if (preset === 'week') {
+    const day = today.getDay() || 7;
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - day + 1);
+    return { from: toIso(monday), to: todayIso() };
+  }
+  if (preset === 'year') return { from: `${today.getFullYear()}-01-01`, to: todayIso() };
+  return { from: firstDayOfMonthIso(), to: todayIso() };
+}
+
+function toIso(date) {
+  const offset = date.getTimezoneOffset();
+  return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
+}
+
+function getReportData() {
+  const from = reportState.from || '0000-01-01';
+  const to = reportState.to || '9999-12-31';
+  const bills = state.bills.filter(bill => {
+    const date = isoDate(bill.date || bill.createdAt);
+    return date >= from && date <= to;
+  }).sort((a, b) => String(b.date).localeCompare(String(a.date)) || String(b.createdAt).localeCompare(String(a.createdAt)));
+  const summary = {
+    count: bills.length,
+    gross: bills.reduce((s,b) => s + number(b.grandTotal), 0),
+    received: bills.reduce((s,b) => s + number(b.amountReceived), 0),
+    due: bills.reduce((s,b) => s + number(b.due), 0),
+    tax: bills.reduce((s,b) => s + number(b.gstAmount), 0),
+    discounts: bills.reduce((s,b) => s + number(b.discount), 0)
+  };
+  let rows = [];
+  if (reportState.type === 'products' || reportState.type === 'beverages') {
+    const map = new Map();
+    bills.forEach(bill => bill.items.forEach(item => {
+      if (reportState.type === 'beverages' && item.category !== 'beverage') return;
+      const key = item.menuId || item.nameEn;
+      if (!map.has(key)) map.set(key, { nameEn: item.nameEn, nameMr: item.nameMr, category: item.category, qty: 0, sales: 0 });
+      const row = map.get(key);
+      row.qty += number(item.qty);
+      row.sales += number(item.lineTotal);
+    }));
+    rows = [...map.values()].sort((a,b) => b.sales - a.sales);
+  } else if (reportState.type === 'payments') {
+    const map = new Map();
+    bills.forEach(bill => {
+      const key = bill.paymentMode || 'cash';
+      if (!map.has(key)) map.set(key, { mode: key, bills: 0, received: 0, due: 0 });
+      const row = map.get(key);
+      row.bills += 1; row.received += number(bill.amountReceived); row.due += number(bill.due);
+    });
+    rows = [...map.values()].sort((a,b) => b.received - a.received);
+  } else {
+    rows = bills;
+  }
+  return { from, to, bills, summary, rows };
+}
+
+function couponStatusMarkup(status) {
+  if (status === 'in-progress') return `<span class="status status-partial">${esc(t('inProgress'))}</span>`;
+  if (status === 'served') return `<span class="status status-served">${esc(t('served'))}</span>`;
+  return `<span class="status status-new">${esc(t('pending'))}</span>`;
+}
+
+function updateCouponStatus(id, status) {
+  const bill = findBill(id);
+  if (!bill) return;
+  bill.couponStatus = status;
+  bill.couponUpdatedAt = new Date().toISOString();
+  saveState(); render(); showToast(status === 'served' ? t('servedNow') : 'Order started.', 'success');
+}
+
+function renderCouponQueue() {
+  const pending = [...state.bills].filter(bill => bill.couponStatus !== 'served').sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+  return `<div class="page"><div class="page-header"><div><p class="eyebrow">${esc(t('staff'))} · ${esc(t('couponTab'))}</p><h1 class="page-title">${esc(t('couponQueue'))}</h1><p class="page-description">Track each order from pending to served. Press F6 anytime to return here.</p></div><div class="header-actions"><span class="date-badge">F6 · ${pending.length} pending</span><button class="btn btn-secondary" data-action="navigate" data-view="billing">＋ ${esc(t('newBill'))}</button></div></div>${pending.length ? `<div class="coupon-card-grid">${pending.map(bill => `<section class="card coupon-order-card"><div class="action-row"><div><div class="coupon-order-code">${esc(bill.couponNo)}</div><div class="tiny muted">${esc(bill.billNo)} · ${esc(bill.customerName || 'Walk-in')}</div></div>${couponStatusMarkup(bill.couponStatus)}</div><div class="coupon-order-items">${bill.items.map(item => `<div><span>${esc(item.nameEn)} <small>${esc(item.nameMr || '')}</small></span><strong>× ${number(item.qty)}</strong></div>`).join('')}</div><div class="coupon-order-total"><span>${esc(t('quantity'))}</span><strong>${bill.items.reduce((sum, item) => sum + number(item.qty), 0)}</strong></div><div class="action-row"><span class="tiny muted">${bill.couponUpdatedAt ? `${esc(t('lastUpdated'))}: ${esc(displayDate(bill.couponUpdatedAt, true))}` : 'New order'}</span><div class="history-actions">${bill.couponStatus !== 'in-progress' ? `<button class="btn btn-secondary btn-small" data-action="start-coupon" data-id="${esc(bill.id)}">▶ ${esc(t('startOrder'))}</button>` : ''}<button class="btn btn-success btn-small" data-action="mark-served" data-id="${esc(bill.id)}">✓ ${esc(t('markReady'))}</button></div></div></section>`).join('')}</div>` : `<section class="card card-pad"><div class="empty-state"><div class="empty-icon">✅</div>${esc(t('noPendingCoupons'))}</div></section>`}</div>`;
+}
+
+function renderBillHistory() {
+  const term = historySearch.trim().toLowerCase();
+  const bills = [...state.bills].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))).filter(bill => !term || `${bill.billNo} ${bill.couponNo} ${bill.customerName} ${bill.mobile} ${bill.items.map(item => `${item.nameEn} ${item.nameMr}`).join(' ')}`.toLowerCase().includes(term));
+  return `<div class="page"><div class="page-header"><div><p class="eyebrow">${esc(t('staff'))} · ${esc(t('historyTab'))}</p><h1 class="page-title">${esc(t('historyTitle'))}</h1><p class="page-description">${esc(t('historyHelp'))}</p></div><div class="header-actions"><button class="btn btn-primary" data-action="navigate" data-view="billing">＋ ${esc(t('newBill'))}</button></div></div><section class="card card-pad"><div class="menu-toolbar"><div class="menu-search"><span>⌕</span><input data-history-search value="${esc(historySearch)}" placeholder="${esc(t('searchBills'))}" autocomplete="off"></div><button class="btn btn-primary" data-action="history-search">⌕ ${esc(t('search'))}</button><button class="btn btn-secondary" data-action="history-clear">↺ ${esc(t('clear'))}</button></div><div id="history-table">${bills.length ? `<div class="table-wrap"><table><thead><tr><th>${esc(t('date'))}</th><th>${esc(t('billNumber'))}</th><th>${esc(t('customer'))}</th><th>${esc(t('amount'))}</th><th>${esc(t('status'))}</th><th>${esc(t('actions'))}</th></tr></thead><tbody>${bills.map(bill => `<tr><td>${esc(displayDate(bill.date || bill.createdAt, true))}</td><td><div class="td-strong">${esc(bill.billNo)}</div><div class="tiny muted">${esc(bill.couponNo)}</div></td><td><div class="td-strong">${esc(bill.customerName || 'Walk-in')}</div><div class="tiny muted">${esc(bill.mobile || '')}</div></td><td class="td-strong">${money(bill.grandTotal)}</td><td>${formatStatus(bill.status)}${bill.due > 0 ? `<div class="tiny status-due" style="margin-top:4px">${money(bill.due)} due</div>` : ''}</td><td><div class="history-actions"><button class="btn btn-secondary btn-small" data-action="edit-bill" data-id="${esc(bill.id)}">✎ ${esc(t('edit'))}</button><button class="btn btn-secondary btn-small" data-action="print-bill" data-id="${esc(bill.id)}">🖨</button>${bill.due > 0 ? `<button class="btn btn-success btn-small" data-action="settle-bill" data-id="${esc(bill.id)}">✓ ${esc(t('settleBill'))}</button>` : ''}</div></td></tr>`).join('')}</tbody></table></div>` : `<div class="empty-state"><div class="empty-icon">🧾</div>${esc(t('noHistory'))}</div>`}</div></section></div>`;
+}
+
+function renderReports() {
+  const data = getReportData();
+  const periodOptions = [
+    ['today', t('reportPeriodToday')], ['week', t('reportPeriodWeek')], ['month', t('reportPeriodMonth')], ['year', t('reportPeriodYear')], ['custom', t('reportPeriodCustom')]
+  ];
+  return `<div class="page"><div class="page-header"><div><p class="eyebrow">${esc(t('owner'))} · ${esc(t('reports'))}</p><h1 class="page-title">${esc(t('reportsTitle'))}</h1><p class="page-description">${esc(t('reportsHelp'))}</p></div><div class="header-actions"><button class="btn btn-secondary" data-action="download-backup">⇩ ${esc(t('downloadBackup'))}</button></div></div><section class="card report-filter"><form id="report-filter-form"><div class="report-filter-grid"><div class="form-field period-field"><label class="form-label">${esc(t('period'))}</label><select name="preset">${periodOptions.map(([value,label]) => `<option value="${value}" ${reportState.preset === value ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">${esc(t('from'))}</label><input type="date" name="from" value="${esc(reportState.from)}"></div><div class="form-field"><label class="form-label">${esc(t('to'))}</label><input type="date" name="to" value="${esc(reportState.to)}"></div><div class="form-field"><label class="form-label">${esc(t('reportType'))}</label><select name="type"><option value="bills" ${reportState.type === 'bills' ? 'selected' : ''}>${esc(t('billsReport'))}</option><option value="products" ${reportState.type === 'products' ? 'selected' : ''}>${esc(t('productReport'))}</option><option value="beverages" ${reportState.type === 'beverages' ? 'selected' : ''}>${esc(t('beverageReport'))}</option><option value="payments" ${reportState.type === 'payments' ? 'selected' : ''}>${esc(t('paymentReport'))}</option></select></div><button class="btn btn-primary filter-submit" type="submit">↻ ${esc(t('apply'))}</button></div></form><div class="report-tabs" style="margin-top:14px"><button class="report-tab ${reportState.type === 'bills' ? 'active' : ''}" data-action="report-type" data-type="bills">${esc(t('reportBills'))}</button><button class="report-tab ${reportState.type === 'products' ? 'active' : ''}" data-action="report-type" data-type="products">${esc(t('reportProducts'))}</button><button class="report-tab ${reportState.type === 'beverages' ? 'active' : ''}" data-action="report-type" data-type="beverages">${esc(t('reportBeverages'))}</button><button class="report-tab ${reportState.type === 'payments' ? 'active' : ''}" data-action="report-type" data-type="payments">${esc(t('reportPayments'))}</button></div></section><div class="report-summary"><div class="report-stat"><div class="report-stat-label">${esc(t('records'))}</div><div class="report-stat-value">${data.summary.count}</div></div><div class="report-stat"><div class="report-stat-label">${esc(t('gross'))}</div><div class="report-stat-value">${money(data.summary.gross)}</div></div><div class="report-stat"><div class="report-stat-label">${esc(t('received'))}</div><div class="report-stat-value" style="color:var(--green)">${money(data.summary.received)}</div></div><div class="report-stat"><div class="report-stat-label">${esc(t('openDues'))}</div><div class="report-stat-value" style="color:var(--red)">${money(data.summary.due)}</div></div><div class="report-stat"><div class="report-stat-label">${esc(t('tax'))} · ${esc(t('discounts'))}</div><div class="report-stat-value">${money(data.summary.tax)} <span class="muted" style="font-size:12px">· ${money(data.summary.discounts)}</span></div></div></div><section class="card card-pad"><div class="card-title-row"><div><h2 class="card-title">${esc(t('summary'))} · ${esc(displayDate(data.from))} – ${esc(displayDate(data.to))}</h2><p class="card-subtitle">${data.rows.length} ${esc(t('records'))} · ${esc(reportTypeLabel(reportState.type))}</p></div><div class="export-actions"><button class="btn btn-secondary btn-small" data-action="report-csv">⇩ ${esc(t('exportCsv'))}</button><button class="btn btn-secondary btn-small" data-action="report-json">⇩ ${esc(t('exportJson'))}</button><button class="btn btn-primary btn-small" data-action="report-pdf">⇩ ${esc(t('exportPdf'))}</button><button class="btn btn-success btn-small" data-action="report-whatsapp">↗ ${esc(t('whatsappReport'))}</button></div></div>${renderReportTable(data)}</section></div>`;
+}
+
+function reportTypeLabel(type) {
+  if (type === 'products') return t('productReport');
+  if (type === 'beverages') return t('beverageReport');
+  if (type === 'payments') return t('paymentReport');
+  return t('billsReport');
+}
+
+function renderReportTable(data) {
+  if (!data.rows.length) return `<div class="empty-state"><div class="empty-icon">📊</div>${esc(t('noReportData'))}</div>`;
+  if (reportState.type === 'products' || reportState.type === 'beverages') return `<div class="table-wrap"><table><thead><tr><th>${esc(t('item'))}</th><th>${esc(t('category'))}</th><th>${esc(t('quantity'))}</th><th>${esc(t('total'))}</th></tr></thead><tbody>${data.rows.map(row => `<tr><td><div class="td-strong">${esc(row.nameEn)}</div><div class="tiny muted">${esc(row.nameMr || '')}</div></td><td>${esc(categoryLabel(row.category))}</td><td>${number(row.qty).toLocaleString('en-IN')}</td><td class="td-strong">${money(row.sales)}</td></tr>`).join('')}</tbody></table></div>`;
+  if (reportState.type === 'payments') return `<div class="table-wrap"><table><thead><tr><th>${esc(t('paymentMode'))}</th><th>${esc(t('bills'))}</th><th>${esc(t('received'))}</th><th>${esc(t('due'))}</th></tr></thead><tbody>${data.rows.map(row => `<tr><td><span class="chip ${row.mode === 'upi' ? 'blue' : ''}">${row.mode === 'upi' ? '📱 UPI' : '💵 Cash'}</span></td><td>${row.bills}</td><td class="td-strong">${money(row.received)}</td><td>${money(row.due)}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="table-wrap"><table><thead><tr><th>${esc(t('date'))}</th><th>${esc(t('billNumber'))}</th><th>${esc(t('customer'))}</th><th>${esc(t('paymentMode'))}</th><th>${esc(t('amount'))}</th><th>${esc(t('due'))}</th><th>${esc(t('actions'))}</th></tr></thead><tbody>${data.rows.map(bill => `<tr><td>${esc(displayDate(bill.date))}</td><td class="td-strong">${esc(bill.billNo)}</td><td>${esc(bill.customerName || 'Walk-in')}</td><td>${bill.paymentMode === 'upi' ? '📱 UPI' : '💵 Cash'}</td><td class="td-strong">${money(bill.grandTotal)}</td><td>${bill.due > 0 ? `<span class="status status-due">${money(bill.due)}</span>` : '—'}</td><td><div class="header-actions"><button class="icon-btn" data-action="print-bill" data-id="${esc(bill.id)}" title="${esc(t('printCombined'))}">🖨</button></div></td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function renderSettings() {
+  const s = state.settings;
+  const editing = menuEditingId ? state.menu.find(item => item.id === menuEditingId) : null;
+  const menuFormItem = editing || { nameEn: '', nameMr: '', category: 'food', price: '', icon: '🍽', active: true };
+  return `<div class="page"><div class="page-header"><div><p class="eyebrow">${esc(t('owner'))} · ${esc(t('settings'))}</p><h1 class="page-title">${esc(t('settingsTitle'))}</h1><p class="page-description">${esc(t('settingsHelp'))}</p></div><div class="header-actions"><button class="btn btn-secondary" data-action="navigate" data-view="reports">▥ ${esc(t('reports'))}</button></div></div><div class="settings-grid"><div class="settings-column"><section class="card settings-card"><div class="card-title-row"><div><h2 class="card-title">${esc(t('businessDetails'))}</h2><p class="card-subtitle">Printed on every bill and thermal receipt.</p></div></div><form id="business-form"><div class="form-grid"><div class="form-field full"><label class="form-label">${esc(t('courtName'))} *</label><input name="courtName" required value="${esc(s.courtName)}"></div><div class="form-field full"><label class="form-label">${esc(t('logo'))}</label><div class="logo-upload"><div class="logo-preview">${s.logo ? `<img src="${esc(s.logo)}" alt="Food court logo">` : '☀'}</div><div class="logo-upload-copy"><strong>${s.logo ? esc(t('logo')) : esc(t('noLogo'))}</strong><span>PNG/JPG, small square logo works best for receipts.</span></div><label class="btn btn-secondary btn-small" style="cursor:pointer">↑ ${esc(t('uploadLogo'))}<input type="file" accept="image/png,image/jpeg,image/webp" data-action="logo-upload" hidden></label>${s.logo ? `<button type="button" class="btn btn-danger btn-small" data-action="remove-logo">×</button>` : ''}</div></div><div class="form-field"><label class="form-label">${esc(t('fssai'))}</label><input name="fssai" value="${esc(s.fssai)}" placeholder="Optional"></div><div class="form-field"><label class="form-label">${esc(t('gstNo'))}</label><input name="gstNo" value="${esc(s.gstNo)}" placeholder="Optional"></div><div class="form-field"><label class="form-label">${esc(t('gstTax'))}</label><input type="number" name="gstTax" min="0" max="100" step="0.01" value="${esc(s.gstTax)}"></div><div class="form-field"><label class="form-label">${esc(t('defaultDiscount'))}</label><div class="input-with-prefix"><span>₹</span><input type="number" name="defaultDiscount" min="0" step="0.01" value="${esc(s.defaultDiscount)}"></div></div><div class="form-field full"><label class="form-label">${esc(t('footerEnglish'))}</label><input name="footerEn" value="${esc(s.footerEn)}"></div><div class="form-field full"><label class="form-label">${esc(t('footerMarathi'))}</label><input name="footerMr" value="${esc(s.footerMr)}"></div><div class="form-field full"><label class="form-label">${esc(t('disclaimer'))}</label><textarea name="disclaimer" rows="2">${esc(s.disclaimer)}</textarea></div></div><div class="header-actions" style="margin-top:17px"><button class="btn btn-primary" type="submit">✓ ${esc(t('saveSettings'))}</button></div></form></section><section class="card settings-card"><div class="card-title-row"><div><h2 class="card-title">${esc(t('security'))}</h2><p class="card-subtitle">PIN entry keeps staff and owner areas separate.</p></div><span class="chip blue">PIN</span></div><form id="security-form"><div class="form-grid"><div class="form-field"><label class="form-label">${esc(t('staffPin'))}</label><input name="staffPin" type="password" inputmode="numeric" minlength="4" maxlength="8" value="${esc(s.staffPin)}"></div><div class="form-field"><label class="form-label">${esc(t('ownerPin'))}</label><input name="ownerPin" type="password" inputmode="numeric" minlength="4" maxlength="8" value="${esc(s.ownerPin)}"></div><div class="form-field"><label class="form-label">${esc(t('ownerPin2'))}</label><input name="ownerPin2" type="password" inputmode="numeric" minlength="4" maxlength="8" value="${esc(s.ownerPin2 || s.ownerPin)}"></div><div class="form-field"><label class="form-label">${esc(t('deleteTopPin'))}</label><input name="deleteTopPin" type="password" inputmode="numeric" minlength="4" maxlength="8" value="${esc(s.deleteTopPin)}"></div><div class="form-field"><label class="form-label">${esc(t('deleteBottomPin'))}</label><input name="deleteBottomPin" type="password" inputmode="numeric" minlength="4" maxlength="8" value="${esc(s.deleteBottomPin)}"></div></div><div class="security-callout" style="margin-top:14px">🔐 ${esc(t('demoHint'))}</div><div class="header-actions" style="margin-top:15px"><button class="btn btn-secondary" type="submit">✓ ${esc(t('saveSecurity'))}</button></div></form></section></div><div class="settings-column"><section class="card settings-card"><div class="card-title-row"><div><h2 class="card-title">${esc(t('menuManagement'))}</h2><p class="card-subtitle">Bilingual items appear as large tap buttons on the billing screen.</p></div><span class="chip">${state.menu.length}</span></div><form id="menu-form"><div class="form-grid"><div class="form-field"><label class="form-label">${esc(t('itemEnglish'))} *</label><input name="nameEn" required value="${esc(menuFormItem.nameEn)}" placeholder="Kanda Poha"></div><div class="form-field"><label class="form-label">${esc(t('itemMarathi'))}</label><input name="nameMr" value="${esc(menuFormItem.nameMr)}" placeholder="कांदा पोहे"></div><div class="form-field"><label class="form-label">${esc(t('category'))}</label><select name="category"><option value="food" ${menuFormItem.category === 'food' ? 'selected' : ''}>🍽 ${esc(t('foodCategory'))}</option><option value="beverage" ${menuFormItem.category === 'beverage' ? 'selected' : ''}>☕ ${esc(t('beverageCategory'))}</option></select></div><div class="form-field"><label class="form-label">${esc(t('price'))} *</label><div class="input-with-prefix"><span>₹</span><input type="number" name="price" min="0" step="0.01" required value="${menuFormItem.price === '' ? '' : esc(menuFormItem.price)}"></div></div><div class="form-field"><label class="form-label">Icon / emoji</label><input name="icon" value="${esc(menuFormItem.icon || '🍽')}" maxlength="3" placeholder="🍽"></div></div><div class="header-actions" style="margin-top:14px"><button class="btn btn-primary btn-small" type="submit">＋ ${esc(editing ? t('saveMenu') : t('addMenuItem'))}</button>${editing ? `<button class="btn btn-secondary btn-small" type="button" data-action="cancel-menu-edit">${esc(t('cancel'))}</button>` : ''}</div></form><div class="divider"></div><div>${state.menu.map(renderMenuAdminRow).join('')}</div></section><section class="card settings-card"><div class="card-title-row"><div><h2 class="card-title">${esc(t('backup'))}</h2><p class="card-subtitle">Owner-only downloads for bills, coupons, menu, inventory and settings.</p></div></div><div class="backup-actions"><button class="btn btn-secondary" data-action="download-backup">⇩ ${esc(t('downloadBackup'))}</button><button class="btn btn-secondary" data-action="restore-trigger">↥ ${esc(t('restoreBackup'))}</button><input id="restore-input" type="file" accept="application/json,.json" data-action="restore-file" hidden></div><div class="inline-alert info">💾 Keep a copy on a laptop or drive every day. This app stores live data locally on the current device.</div></section><section class="card settings-card danger-zone"><div class="card-title-row"><div><h2 class="card-title">${esc(t('danger'))}</h2><p class="card-subtitle">${esc(t('deleteWarning'))}</p></div></div><button class="btn btn-danger" data-action="open-delete-data">⌫ ${esc(t('deleteAll'))}</button></section></div></div></div>`;
+}
+
+function renderMenuAdminRow(item) {
+  return `<div class="menu-admin-row"><div class="menu-admin-name">${esc(item.icon || '🍽')} ${esc(item.nameEn)}<span>${esc(item.nameMr || '—')}</span></div><div class="menu-admin-price td-strong">${money(item.price)}</div><div class="menu-admin-category"><span class="chip ${item.category === 'beverage' ? 'blue' : ''}">${esc(categoryLabel(item.category))}</span></div><div class="header-actions"><button class="btn btn-secondary btn-small" data-action="edit-menu" data-id="${esc(item.id)}">✎</button><button class="btn btn-danger btn-small" data-action="delete-menu" data-id="${esc(item.id)}">×</button></div></div>`;
+}
+
+function showAuthGate() {
+  const gate = document.getElementById('auth-gate');
+  gate.hidden = false;
+  const ownerFields = authRole === 'owner' ? `<div class="form-field"><label class="form-label" for="auth-pin-2">${esc(t('ownerPin2'))}</label><input id="auth-pin-2" class="pin-input" name="pin2" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••" required></div>` : '';
+  gate.innerHTML = `<div class="auth-card"><div class="auth-brand"><div class="brand-mark">${state.settings.logo ? `<img src="${esc(state.settings.logo)}" alt="Logo">` : '☀'}</div><h1>${esc(state.settings.courtName || 'Origo Breakfast Food Court')}</h1><p>Simple billing for a self-service breakfast counter.<br>Choose your access level and enter the PIN.</p></div><div class="auth-role-tabs"><button class="${authRole === 'staff' ? 'active' : ''}" data-action="auth-role" data-role="staff">● ${esc(t('staff'))}<br><small>Billing & inventory</small></button><button class="${authRole === 'owner' ? 'active' : ''}" data-action="auth-role" data-role="owner">◈ ${esc(t('owner'))}<br><small>Two PINs · reports & settings</small></button></div><form id="auth-form"><div class="form-field"><label class="form-label" for="auth-pin">${authRole === 'owner' ? esc(t('ownerPin')) : esc(t('staffPin'))}</label><input id="auth-pin" class="pin-input" name="pin" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••" autofocus required></div>${ownerFields}<div id="auth-error" class="auth-error"></div><button class="btn btn-primary btn-block" style="margin-top:14px" type="submit">${authRole === 'owner' ? '🔓 ' + esc(t('owner')) : '▶ ' + esc(t('staff'))} ${esc(t('dashboard'))}</button></form><div class="demo-pin">💡 ${esc(t('demoHint'))}</div></div>`;
+  setTimeout(() => document.getElementById('auth-pin')?.focus(), 30);
+}
+function renderAuthGate() {
+  if (!session.role) showAuthGate();
+  else document.getElementById('auth-gate').hidden = true;
+}
+
+function renderModal() {
+  const root = document.getElementById('modal-root');
+  if (!modalState) { root.innerHTML = ''; return; }
+  if (modalState.type === 'success') {
+    const bill = modalState.bill;
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal success-modal" role="dialog" aria-modal="true"><div class="modal-body"><div class="success-visual">✓</div><h3>${esc(t('billSaved'))}</h3><p class="success-copy">${esc(t('couponReady'))}</p><div class="ticket-ids"><div class="ticket-id"><span>${esc(t('billNumber'))}</span><strong>${esc(bill.billNo)}</strong></div><div class="ticket-id"><span>${esc(t('coupon'))}</span><strong>${esc(bill.couponNo)}</strong></div></div><div class="success-actions"><button class="btn btn-secondary" data-action="print-bill" data-id="${esc(bill.id)}">🖨 ${esc(t('printCombined'))}</button><button class="btn btn-primary" data-action="download-bill-pdf" data-id="${esc(bill.id)}">⇩ ${esc(t('downloadPdf'))}</button></div><div class="inline-alert info" style="text-align:left;margin-top:18px">ℹ️ The printed bill has full amounts. The coupon section at the bottom has only bilingual item names and quantities—no prices.</div></div><div class="modal-foot"><button class="btn btn-ghost" data-action="close-modal">${esc(t('close'))}</button><button class="btn btn-primary" data-action="new-bill-after-save">＋ ${esc(t('newBill'))}</button></div></div></div>`;
+    return;
+  }
+  if (modalState.type === 'confirm') {
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h3>${esc(modalState.title)}</h3><p>${esc(modalState.message)}</p></div><button class="icon-btn" data-action="close-modal">×</button></div><div class="modal-foot"><button class="btn btn-secondary" data-action="close-modal">${esc(t('noKeep'))}</button><button class="btn btn-danger" data-action="confirm-modal">${esc(modalState.confirmLabel || t('confirmDelete'))}</button></div></div></div>`;
+    return;
+  }
+  if (modalState.type === 'delete-data') {
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h3>${esc(t('deleteAll'))}</h3><p>${esc(t('deleteWarning'))}</p></div><button class="icon-btn" data-action="close-modal">×</button></div><div class="modal-body"><div class="security-callout">⚠️ ${esc(t('deleteWarning'))}</div><div class="form-grid" style="margin-top:16px"><div class="form-field"><label class="form-label">${esc(t('topPin'))}</label><input id="delete-top-input" type="password" inputmode="numeric" maxlength="8" placeholder="••••"></div><div class="form-field"><label class="form-label">${esc(t('bottomPin'))}</label><input id="delete-bottom-input" type="password" inputmode="numeric" maxlength="8" placeholder="••••"></div></div><div id="delete-error" class="auth-error" style="text-align:left;margin-top:10px"></div></div><div class="modal-foot"><button class="btn btn-secondary" data-action="close-modal">${esc(t('noKeep'))}</button><button class="btn btn-danger" data-action="confirm-delete-data">⌫ ${esc(t('yesDelete'))}</button></div></div></div>`;
+    return;
+  }
+  if (modalState.type === 'view-menu') {
+    const staffViews = ['billing', 'inventory', 'menu', 'history'];
+    const ownerViews = session.role === 'owner' ? ['reports', 'settings'] : [];
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h3>${esc(t('openTabs'))}</h3><p>Open only the work area you need.</p></div><button class="icon-btn" data-action="close-modal">×</button></div><div class="modal-body"><div class="quick-grid">${[...staffViews, ...ownerViews].map(view => `<button class="quick-action" data-action="open-view" data-view="${view}"><span class="quick-icon">${view === 'billing' ? '🧾' : view === 'inventory' ? '📦' : view === 'menu' ? '☷' : view === 'history' ? '▦' : view === 'coupons' ? '🎟' : view === 'reports' ? '📊' : '⚙'}</span><span><span class="quick-label">${esc(tabLabel(view))}</span><span class="quick-sub">Open tab</span></span></button>`).join('')}</div></div><div class="modal-foot"><button class="btn btn-primary" data-action="close-modal">${esc(t('close'))}</button></div></div></div>`;
+    return;
+  }
+  if (modalState.type === 'edit-bill') {
+    const bill = modalState.bill;
+    const itemFields = bill.items.map((item, index) => `<div class="form-field"><label class="form-label">${esc(item.nameEn)} / ${esc(item.nameMr || '')}</label><input type="number" name="itemQty-${index}" min="1" step="1" value="${number(item.qty)}"></div>`).join('');
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal wide" role="dialog" aria-modal="true"><div class="modal-head"><div><h3>${esc(t('editBill'))} · ${esc(bill.billNo)}</h3><p>Edit customer, quantities and payment details.</p></div><button class="icon-btn" data-action="close-modal">×</button></div><form id="edit-bill-form"><div class="modal-body"><input type="hidden" name="billId" value="${esc(bill.id)}"><div class="form-grid"><div class="form-field"><label class="form-label">${esc(t('customerName'))}</label><input name="customerName" value="${esc(bill.customerName)}"></div><div class="form-field"><label class="form-label">${esc(t('mobile'))}</label><input name="mobile" value="${esc(bill.mobile || '')}" inputmode="tel"></div></div><div class="divider"></div><h3 class="section-title">${esc(t('items'))} · ${esc(t('quantity'))}</h3><div class="form-grid">${itemFields}</div><div class="divider"></div><div class="form-grid"><div class="form-field"><label class="form-label">${esc(t('paymentMode'))}</label><select name="paymentMode"><option value="cash" ${bill.paymentMode === 'cash' ? 'selected' : ''}>💵 ${esc(t('cash'))}</option><option value="upi" ${bill.paymentMode === 'upi' ? 'selected' : ''}>📱 ${esc(t('upi'))}</option></select></div><div class="form-field"><label class="form-label">${esc(t('amountReceived'))}</label><input type="number" name="amountReceived" min="0" step="0.01" value="${number(bill.amountReceived)}"></div></div></div><div class="modal-foot"><button class="btn btn-secondary" type="button" data-action="close-modal">${esc(t('cancel'))}</button><button class="btn btn-primary" type="submit">✓ ${esc(t('saveBillEdit'))}</button></div></form></div></div>`;
+    return;
+  }
+  if (modalState.type === 'settle-bill') {
+    const bill = modalState.bill;
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h3>${esc(t('settleBill'))} · ${esc(bill.billNo)}</h3><p>${esc(bill.customerName || 'Walk-in')} · ${money(bill.due)} pending</p></div><button class="icon-btn" data-action="close-modal">×</button></div><form id="settle-bill-form"><div class="modal-body"><input type="hidden" name="billId" value="${esc(bill.id)}"><div class="form-field"><label class="form-label">${esc(t('paymentMode'))}</label><select name="paymentMode"><option value="cash">💵 ${esc(t('cash'))}</option><option value="upi">📱 ${esc(t('upi'))}</option></select></div><div class="inline-alert success" style="margin-top:14px">✓ The full pending amount ${money(bill.due)} will be marked as received.</div></div><div class="modal-foot"><button class="btn btn-secondary" type="button" data-action="close-modal">${esc(t('cancel'))}</button><button class="btn btn-success" type="submit">✓ ${esc(t('settleBill'))}</button></div></form></div></div>`;
+    return;
+  }
+  if (modalState.type === 'help') {
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h3>Counter guide</h3><p>Designed for touch, tablets and quick training.</p></div><button class="icon-btn" data-action="close-modal">×</button></div><div class="modal-body"><div class="quick-grid"><div class="quick-action"><span class="quick-icon">1️⃣</span><span><span class="quick-label">Open New Bill</span><span class="quick-sub">Tap New Bill and type the customer name.</span></span></div><div class="quick-action"><span class="quick-icon">2️⃣</span><span><span class="quick-label">Tap food items</span><span class="quick-sub">Each tap adds one quantity. Use + or − to change quantity.</span></span></div><div class="quick-action"><span class="quick-icon">3️⃣</span><span><span class="quick-label">Take payment</span><span class="quick-sub">Choose Cash or UPI. Cash change is shown automatically.</span></span></div><div class="quick-action"><span class="quick-icon">4️⃣</span><span><span class="quick-label">Print both</span><span class="quick-sub">Bill has money details. Coupon has only item quantities and token.</span></span></div></div><div class="inline-alert info">🔒 Staff can bill and update inventory. Owner PIN unlocks reports, exports, backups and settings.</div></div><div class="modal-foot"><button class="btn btn-primary" data-action="close-modal">${esc(t('close'))}</button></div></div></div>`;
+    return;
+  }
+  if (modalState.type === 'confirm-inventory') {
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h3>${esc(t('confirmRemove'))}</h3><p>${esc(modalState.itemName)}</p></div><button class="icon-btn" data-action="close-modal">×</button></div><div class="modal-foot"><button class="btn btn-secondary" data-action="close-modal">${esc(t('noKeep'))}</button><button class="btn btn-danger" data-action="confirm-remove-inventory">× ${esc(t('remove'))}</button></div></div></div>`;
+    return;
+  }
+  if (modalState.type === 'confirm-menu') {
+    root.innerHTML = `<div class="modal-backdrop" data-action="modal-backdrop"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h3>${esc(t('confirmRemove'))}</h3><p>${esc(modalState.itemName)}</p></div><button class="icon-btn" data-action="close-modal">×</button></div><div class="modal-body"><div class="inline-alert warn">The item will disappear from the billing buttons. Existing bills stay unchanged.</div></div><div class="modal-foot"><button class="btn btn-secondary" data-action="close-modal">${esc(t('noKeep'))}</button><button class="btn btn-danger" data-action="confirm-remove-menu">× ${esc(t('remove'))}</button></div></div></div>`;
+  }
+}
+
+function showToast(message, type = '') {
+  const region = document.getElementById('toast-region');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${type === 'error' ? '⚠' : type === 'success' ? '✓' : 'ℹ'}</span><span>${esc(message)}</span>`;
+  region.appendChild(toast);
+  setTimeout(() => toast.remove(), 4200);
+}
+
+function navigate(view) {
+  if (view === 'reports' || view === 'settings') {
+    if (session.role !== 'owner') { pendingView = view; authRole = 'owner'; showAuthGate(); showToast(t('noAccessCopy'), 'error'); return; }
+  }
+  if ((view === 'billing' || view === 'inventory' || view === 'menu' || view === 'history' || view === 'coupons') && !session.role) { authRole = 'staff'; showAuthGate(); return; }
+  if (!openTabs.includes(view)) openTabs.push(view);
+  session.view = view;
+  render();
+  setTimeout(() => document.getElementById('main-content')?.focus(), 30);
+}
+
+function findBill(id) {
+  return state.bills.find(bill => bill.id === id);
+}
+
+function addToCart(id) {
+  const item = getMenuItem(id);
+  if (!item || item.active === false) return;
+  const existing = billingDraft.cart.find(line => line.id === id);
+  if (existing) existing.qty += 1;
+  else billingDraft.cart.push({ id, qty: 1 });
+  if (billingDraft.customerName === '') billingDraft.customerName = '';
+  render();
+  // Keep the counter's focus in the search/menu area only when available.
+}
+
+function updateCart(id, delta) {
+  const line = billingDraft.cart.find(item => item.id === id);
+  if (!line) return;
+  line.qty += delta;
+  if (line.qty <= 0) billingDraft.cart = billingDraft.cart.filter(item => item.id !== id);
+  render();
+}
+
+function resetBill() {
+  billingDraft = blankBillingDraft();
+  menuSearch = '';
+  menuCategory = 'all';
+  render();
+}
+
+function createBill() {
+  const calc = calculateBilling();
+  const customerName = billingDraft.customerName.trim();
+  if (!customerName || !calc.cartItems.length) { showToast(t('required'), 'error'); return; }
+  if (calc.total < 0 || !Number.isFinite(calc.total)) { showToast(t('invalidAmount'), 'error'); return; }
+  const date = todayIso();
+  const sequence = state.nextBillSeq;
+  const billNo = `${date.replace(/-/g, '')}-${String(sequence).padStart(4, '0')}`;
+  const couponNo = `CP-${date.replace(/-/g, '')}-${String(state.nextCouponSeq).padStart(4, '0')}`;
+  const id = `bill-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const bill = {
+    id, billNo, couponNo, date, createdAt: new Date().toISOString(),
+    customerName, mobile: billingDraft.mobile.trim(), notes: billingDraft.notes.trim(),
+    items: calc.cartItems.map(item => ({ menuId: item.id, nameEn: item.nameEn, nameMr: item.nameMr, category: item.category, qty: item.qty, rate: number(item.price), lineTotal: item.lineTotal })),
+    subtotal: calc.subtotal, discount: calc.discount, taxable: calc.taxable, gstRate: calc.gstRate, gstAmount: calc.gst,
+    grandTotal: calc.total, paymentMode: billingDraft.paymentMode, amountReceived: calc.received, change: calc.change, due: calc.due,
+    status: calc.status, couponStatus: 'new'
+  };
+  state.bills.push(bill);
+  state.nextBillSeq += 1;
+  state.nextCouponSeq += 1;
+  saveState();
+  lastCreatedBillId = bill.id;
+  billingDraft = blankBillingDraft();
+  menuSearch = '';
+  menuCategory = 'all';
+  render();
+  modalState = { type: 'success', bill };
+  renderModal();
+}
+
+function getBillForAction(id) {
+  const bill = findBill(id);
+  if (!bill) { showToast('Bill not found.', 'error'); return null; }
+  return bill;
+}
+
+function printBill(id) {
+  const bill = getBillForAction(id);
+  if (!bill) return;
+  const html = billPrintHtml(bill);
+  openPrintWindow(html, `Bill ${bill.billNo}`);
+}
+
+function printCoupon(id) {
+  const bill = getBillForAction(id);
+  if (!bill) return;
+  const html = couponPrintHtml(bill);
+  openPrintWindow(html, `Coupon ${bill.couponNo}`);
+}
+
+function openPrintWindow(html, title) {
+  // Print from this same page so the device/browser system print dialog opens.
+  // No popup or second browser window is created.
+  const parsed = new DOMParser().parseFromString(html, 'text/html');
+  const host = document.createElement('div');
+  host.id = 'print-host';
+  host.innerHTML = parsed.body ? parsed.body.innerHTML : html;
+  const printStyles = [];
+  parsed.head?.querySelectorAll('style').forEach(sourceStyle => {
+    const style = document.createElement('style');
+    style.dataset.printStyle = 'true';
+    style.textContent = sourceStyle.textContent;
+    document.head.appendChild(style);
+    printStyles.push(style);
+  });
+  document.body.appendChild(host);
+  const oldTitle = document.title;
+  let cleaned = false;
+  const cleanup = () => {
+    if (cleaned) return;
+    cleaned = true;
+    document.body.classList.remove('is-printing');
+    host.remove();
+    printStyles.forEach(style => style.remove());
+    document.title = oldTitle;
+    window.removeEventListener('afterprint', cleanup);
+  };
+  document.title = title;
+  document.body.classList.add('is-printing');
+  window.addEventListener('afterprint', cleanup);
+  // This opens the normal printer selection/system dialog for the current device.
+  requestAnimationFrame(() => window.print());
+  // Some mobile browsers do not emit afterprint; clean up after the dialog closes.
+  setTimeout(cleanup, 120000);
+}
+
+function printLast() {
+  const bill = lastCreatedBillId ? findBill(lastCreatedBillId) : state.bills[state.bills.length - 1];
+  if (!bill) { showToast(t('noBills'), 'error'); return; }
+  printBill(bill.id);
+}
+
+function receiptHeaderHtml() {
+  const s = state.settings;
+  const logo = s.logo ? `<img class="receipt-logo" src="${esc(s.logo)}" alt="Logo">` : '';
+  return `<div class="receipt-header">${logo}<div class="receipt-court">${esc(s.courtName)}</div>${s.fssai ? `<div>FSSAI: ${esc(s.fssai)}</div>` : ''}${s.gstNo ? `<div>GSTIN: ${esc(s.gstNo)}</div>` : ''}</div>`;
+}
+
+function billPrintHtml(bill) {
+  const s = state.settings;
+  const itemRows = bill.items.map(item => `<tr><td><strong>${esc(item.nameEn)}</strong><small>${esc(item.nameMr || '')}</small></td><td class="center">${number(item.qty)}</td><td class="right">${money(item.rate)}</td><td class="right">${money(item.lineTotal)}</td></tr>`).join('');
+  const couponRows = bill.items.map(item => `<tr><td><strong>${esc(item.nameEn)}</strong><small>${esc(item.nameMr || '')}</small></td><td class="center qty-big">${number(item.qty)}</td></tr>`).join('');
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Bill ${esc(bill.billNo)}</title><style>${printCss(false)}</style></head><body><main class="receipt bill-receipt">${receiptHeaderHtml()}<div class="rule"></div><div class="meta"><span>Bill / बिल: <strong>${esc(bill.billNo)}</strong></span><span>${esc(displayDate(bill.createdAt, true))}</span></div><div class="coupon-code-top">COUPON / कूपन: <strong>${esc(bill.couponNo)}</strong></div><div class="meta"><span>Customer / ग्राहक: <strong>${esc(bill.customerName)}</strong></span>${bill.mobile ? `<span>Mobile / मोबाईल: ${esc(bill.mobile)}</span>` : ''}</div><div class="meta"><span>Total quantity / एकूण प्रमाण: <strong>${bill.items.reduce((sum, item) => sum + number(item.qty), 0)}</strong></span></div><table><thead><tr><th>Item / पदार्थ</th><th class="center">Qty / प्रमाण</th><th class="right">Rate / दर</th><th class="right">Amount / रक्कम</th></tr></thead><tbody>${itemRows}</tbody></table><div class="rule"></div><div class="totals"><div><span>Subtotal / उप-एकूण</span><strong>${money(bill.subtotal)}</strong></div><div><span>Discount / सूट</span><strong>− ${money(bill.discount)}</strong></div><div><span>GST / जीएसटी (${plainMoney(bill.gstRate)}%)</span><strong>${money(bill.gstAmount)}</strong></div><div class="grand"><span>Grand total / अंतिम रक्कम</span><strong>${money(bill.grandTotal)}</strong></div><div><span>Payment / पेमेंट</span><strong>${bill.paymentMode === 'upi' ? 'UPI / यूपीआय' : 'Cash / रोख'} · ${bill.status.toUpperCase()}</strong></div>${bill.paymentMode === 'cash' ? `<div><span>Received / मिळाले</span><strong>${money(bill.amountReceived)}</strong></div><div><span>Change / परत</span><strong>${money(bill.change)}</strong></div>` : ''}${bill.due > 0 ? `<div class="due"><span>Due / बाकी</span><strong>${money(bill.due)}</strong></div>` : ''}</div>${bill.notes ? `<div class="notes"><strong>Notes / नोंद:</strong> ${esc(bill.notes)}</div>` : ''}<div class="rule"></div><div class="thanks">${esc(s.footerEn)}<br>${esc(s.footerMr)}</div><div class="disclaimer">${esc(s.disclaimer)}</div><section class="attached-coupon"><div class="coupon-title">COUPON / कूपन</div><div class="coupon-token">${esc(bill.couponNo)}</div><div class="coupon-meta">Food / Beverage · खाद्यपदार्थ / पेय</div><table><thead><tr><th>Item / पदार्थ</th><th class="center">Qty / प्रमाण</th></tr></thead><tbody>${couponRows}</tbody></table><div class="coupon-total">Total quantity / एकूण प्रमाण: <strong>${bill.items.reduce((sum, item) => sum + number(item.qty), 0)}</strong></div><div class="coupon-note">Self-service order token · कृपया कूपन क्रमांक लक्षात ठेवा</div></section></main></body></html>`;
+}
+function couponPrintHtml(bill) {
+  const s = state.settings;
+  const itemRows = bill.items.map(item => `<tr><td><strong>${esc(item.nameEn)}</strong><small>${esc(item.nameMr || '')}</small></td><td class="center qty-big">${number(item.qty)}</td></tr>`).join('');
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Coupon ${esc(bill.couponNo)}</title><style>${printCss(true)}</style></head><body><main class="receipt coupon-receipt">${receiptHeaderHtml()}<div class="coupon-title">COUPON TOKEN</div><div class="coupon-token">${esc(bill.couponNo)}</div><div class="coupon-meta">Bill ${esc(bill.billNo)} · ${esc(displayDate(bill.date))}</div><div class="rule"></div><table><thead><tr><th>Food / beverage</th><th class="center">Qty</th></tr></thead><tbody>${itemRows}</tbody></table><div class="coupon-total">Total quantity / एकूण प्रमाण: <strong>${bill.items.reduce((sum, item) => sum + number(item.qty), 0)}</strong></div><div class="rule"></div><div class="coupon-note">Self-service order token<br>कृपया कूपन क्रमांक लक्षात ठेवा</div></main></body></html>`;
+}
+
+function printCss(coupon) {
+  return `@page{size:80mm auto;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#111;font-family:Arial,"Noto Sans Devanagari",sans-serif;font-size:11px}.receipt{width:72mm;margin:0 auto;padding:5mm 3mm 7mm}.receipt-header{text-align:center;line-height:1.45}.receipt-logo{display:block;width:18mm;height:18mm;object-fit:cover;border-radius:3mm;margin:0 auto 2mm}.receipt-court{font-size:15px;font-weight:700;line-height:1.2;margin-bottom:1mm}.rule{border-top:1px dashed #555;margin:3mm 0}.meta{display:flex;justify-content:space-between;gap:3mm;font-size:9px;line-height:1.55}.meta strong{font-size:10px}.coupon-code-top{text-align:center;border:1px solid #111;border-radius:2mm;padding:2mm;margin:2mm 0;font-size:12px;font-weight:700}.attached-coupon{border:1.5px dashed #111;padding:3mm 2.5mm 4mm;margin-top:4mm}.attached-coupon table{margin-top:1mm}.attached-coupon .coupon-title{margin-top:0}.coupon-total{text-align:center;font-weight:700;font-size:11px;margin-top:2mm}table{width:100%;border-collapse:collapse;margin-top:2mm}th{font-size:8px;text-transform:uppercase;border-bottom:1px solid #111;padding:1.5mm 0;text-align:left}td{padding:2mm 0;vertical-align:top;border-bottom:1px dotted #aaa}td small{display:block;font-size:8px;color:#444;margin-top:1px}.center{text-align:center}.right{text-align:right}.totals{display:flex;flex-direction:column;gap:1.4mm}.totals>div{display:flex;justify-content:space-between;gap:3mm}.totals .grand{border-top:1px solid #111;padding-top:2mm;margin-top:1mm;font-size:14px;font-weight:700}.totals .due{font-weight:700}.notes{font-size:9px;line-height:1.4;margin-top:3mm}.thanks{text-align:center;font-weight:700;line-height:1.5;margin-top:4mm}.disclaimer{text-align:center;color:#555;font-size:8px;line-height:1.35;margin-top:3mm}.coupon-title{text-align:center;font-size:12px;font-weight:700;letter-spacing:.12em;margin-top:3mm}.coupon-token{text-align:center;font-size:25px;font-weight:800;letter-spacing:.05em;margin:3mm 0 1mm}.coupon-meta{text-align:center;font-size:9px}.coupon-receipt table{font-size:12px}.coupon-receipt th{font-size:9px}.coupon-receipt td{padding:3mm 0}.qty-big{font-size:18px;font-weight:800}.coupon-note{text-align:center;font-weight:700;line-height:1.6;font-size:10px}`;
+}
+async function downloadBillPdf(id) {
+  const bill = getBillForAction(id);
+  if (!bill) return;
+  let blob;
+  try { blob = await buildMarathiBillPdf(bill); }
+  catch (error) { console.warn('Marathi PDF generation failed; using fallback PDF.', error); blob = buildBillPdf(bill); }
+  downloadBlob(blob, `${bill.billNo}-marathi.pdf`);
+  showToast(t('billPdf'), 'success');
+}
+function pdfSafe(text) {
+  return String(text ?? '').replace(/[^\x20-\x7E]/g, '?');
+}
+
+function wrapText(text, max = 92) {
+  const words = pdfSafe(text).split(/\s+/);
+  const lines = [];
+  let current = '';
+  words.forEach(word => {
+    if (!word) return;
+    if ((current + ' ' + word).trim().length > max) { if (current) lines.push(current); current = word; }
+    else current = (current + ' ' + word).trim();
+  });
+  if (current) lines.push(current);
+  return lines.length ? lines : [''];
+}
+
+function pdfEscape(text) {
+  return pdfSafe(text).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+}
+
+function createTextPdf(lines, title = 'Origo report') {
+  const usable = [];
+  lines.forEach(line => wrapText(line).forEach(wrapped => usable.push(wrapped)));
+  const perPage = 51;
+  const pageLines = [];
+  for (let i = 0; i < usable.length; i += perPage) pageLines.push(usable.slice(i, i + perPage));
+  if (!pageLines.length) pageLines.push(['']);
+  const objects = [];
+  objects[1] = '<< /Type /Catalog /Pages 2 0 R >>';
+  objects[3] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';
+  const pageIds = [];
+  pageLines.forEach((page, index) => {
+    const pageId = 4 + index * 2;
+    const contentId = pageId + 1;
+    pageIds.push(pageId);
+    const contentLines = ['BT', '/F1 10 Tf', '40 790 Td', '0 -14 Td'];
+    page.forEach((line, lineIndex) => {
+      if (lineIndex === 0 && index === 0) contentLines.push('/F1 14 Tf');
+      if (lineIndex === 1 && index === 0) contentLines.push('/F1 10 Tf');
+      contentLines.push(`(${pdfEscape(line)}) Tj`, '0 -14 Td');
+    });
+    contentLines.push('ET');
+    const stream = contentLines.join('\n');
+    objects[pageId] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 842] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentId} 0 R >>`;
+    objects[contentId] = `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`;
+  });
+  objects[2] = `<< /Type /Pages /Kids [${pageIds.map(id => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
+  // Keep the generated file ASCII-only so xref byte offsets remain correct in every browser.
+  let pdf = '%PDF-1.4\n';
+  const offsets = [0];
+  for (let i = 1; i < objects.length; i += 1) {
+    if (!objects[i]) continue;
+    offsets[i] = pdf.length;
+    pdf += `${i} 0 obj\n${objects[i]}\nendobj\n`;
+  }
+  const xref = pdf.length;
+  pdf += `xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+  for (let i = 1; i < objects.length; i += 1) pdf += `${String(offsets[i] || 0).padStart(10, '0')} 00000 n \n`;
+  pdf += `trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  return new Blob([pdf], { type: 'application/pdf' });
+}
+
+function marathiDate(value, withTime = false) {
+  if (!value) return '—';
+  const date = new Date(String(value).includes('T') ? value : `${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return new Intl.DateTimeFormat('mr-IN', withTime
+    ? { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }
+    : { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+}
+
+function canvasWrapText(ctx, text, maxWidth, font) {
+  ctx.font = font;
+  const characters = Array.from(String(text ?? ''));
+  const lines = [];
+  let current = '';
+  characters.forEach(character => {
+    const next = current + character;
+    if (current && ctx.measureText(next).width > maxWidth) {
+      lines.push(current);
+      current = character;
+    } else current = next;
+  });
+  if (current || !lines.length) lines.push(current);
+  return lines;
+}
+
+function jpegPdfFromDataUrl(dataUrl, widthPx, heightPx) {
+  const base64 = String(dataUrl).split(',')[1] || '';
+  const binary = atob(base64);
+  const jpegBytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) jpegBytes[i] = binary.charCodeAt(i);
+  const encoder = new TextEncoder();
+  const ascii = text => encoder.encode(text);
+  const pageWidth = 226.77; // 80 mm thermal-width PDF
+  const pageHeight = Math.max(300, pageWidth * heightPx / widthPx);
+  const content = `q\n${pageWidth.toFixed(2)} 0 0 ${pageHeight.toFixed(2)} 0 0 cm\n/Im0 Do\nQ\n`;
+  const objects = {
+    1: '<< /Type /Catalog /Pages 2 0 R >>',
+    2: '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    3: `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth.toFixed(2)} ${pageHeight.toFixed(2)}] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>`,
+    4: `<< /Length ${content.length} >>\nstream\n${content}endstream`
+  };
+  const parts = [];
+  const offsets = [0];
+  let total = 0;
+  const append = bytes => { parts.push(bytes); total += bytes.length; };
+  append(ascii('%PDF-1.4\n'));
+  for (let id = 1; id <= 4; id += 1) {
+    offsets[id] = total;
+    append(ascii(`${id} 0 obj\n${objects[id]}\nendobj\n`));
+  }
+  offsets[5] = total;
+  append(ascii(`5 0 obj\n<< /Type /XObject /Subtype /Image /Width ${widthPx} /Height ${heightPx} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`));
+  append(jpegBytes);
+  append(ascii('\nendstream\nendobj\n'));
+  const xrefOffset = total;
+  append(ascii('xref\n0 6\n0000000000 65535 f \n'));
+  for (let id = 1; id <= 5; id += 1) append(ascii(`${String(offsets[id]).padStart(10, '0')} 00000 n \n`));
+  append(ascii(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`));
+  return new Blob(parts, { type: 'application/pdf' });
+}
+
+async function buildMarathiBillPdf(bill) {
+  if (!document.createElement) throw new Error('Canvas is not available.');
+  const canvas = document.createElement('canvas');
+  const width = 900;
+  const padding = 58;
+  const contentWidth = width - padding * 2;
+  const family = '"Noto Sans Devanagari", "Nirmala UI", Mangal, Arial, sans-serif';
+  const entries = [];
+  const add = (text, size = 24, bold = false, align = 'left', color = '#172033') => {
+    const font = `${bold ? '800' : '500'} ${size}px ${family}`;
+    const probe = document.createElement('canvas').getContext('2d');
+    const wrapped = canvasWrapText(probe, text, contentWidth, font);
+    wrapped.forEach(line => entries.push({ type: 'text', text: line, size, bold, align, color, font }));
+  };
+  const rule = () => entries.push({ type: 'rule' });
+  const blank = () => entries.push({ type: 'blank' });
+  const itemName = item => item.nameMr ? `${item.nameEn} / ${item.nameMr}` : (item.nameEn || 'पदार्थ');
+  const totalQty = bill.items.reduce((sum, item) => sum + number(item.qty), 0);
+  add(state.settings.courtName, 31, true, 'center');
+  add('बिल / CUSTOMER COPY', 23, true, 'center', '#c76805');
+  blank();
+  add(`बिल क्रमांक / Bill number: ${bill.billNo}`, 22, true);
+  add(`दिनांक / Date: ${marathiDate(bill.createdAt, true)}`, 20);
+  add(`ग्राहकाचे नाव / Customer: ${bill.customerName}`, 21);
+  if (bill.mobile) add(`मोबाईल / Mobile: ${bill.mobile}`, 20);
+  add(`कूपन क्रमांक / Coupon: ${bill.couponNo}`, 20);
+  rule();
+  add('पदार्थ / Item · प्रमाण / Quantity · रक्कम / Amount', 23, true);
+  bill.items.forEach(item => add(`${itemName(item)}  × ${number(item.qty)}     ${money(item.lineTotal)}`, 20));
+  add(`एकूण प्रमाण / Total quantity: ${totalQty}`, 21, true);
+  rule();
+  add(`उप-एकूण / Subtotal: ${money(bill.subtotal)}`, 21);
+  add(`सूट / Discount: ${money(bill.discount)}`, 21);
+  add(`जीएसटी / GST (${plainMoney(bill.gstRate)}%): ${money(bill.gstAmount)}`, 21);
+  add(`अंतिम रक्कम / Grand total: ${money(bill.grandTotal)}`, 28, true, 'left', '#159570');
+  add(`पेमेंट / Payment: ${bill.paymentMode === 'upi' ? 'यूपीआय / UPI' : 'रोख / Cash'} · ${bill.status === 'paid' ? 'भरले / PAID' : bill.status === 'partial' ? 'अंशतः / PARTIAL' : 'बाकी / DUE'}`, 21);
+  if (bill.paymentMode === 'cash') {
+    add(`मिळालेली रक्कम / Received: ${money(bill.amountReceived)}`, 21);
+    add(`परत द्यायची रक्कम / Change: ${money(bill.change)}`, 21);
+  }
+  if (bill.due > 0) add(`बाकी रक्कम / Due: ${money(bill.due)}`, 22, true, 'left', '#d93c50');
+  if (bill.notes) { rule(); add(`नोंद / Notes: ${bill.notes}`, 20); }
+  rule();
+  add(state.settings.footerMr || 'आज आमच्यासोबत जेवण केल्याबद्दल धन्यवाद.', 21, true, 'center');
+  add('Thank you for having food with us today.', 18, true, 'center');
+  add('विकलेला माल परत घेतला जाणार नाही. निघण्यापूर्वी ऑर्डर तपासा.', 16, false, 'center', '#6d778a');
+  rule();
+  add('कूपन / COUPON', 26, true, 'center', '#c76805');
+  add(`कूपन कोड / Coupon code: ${bill.couponNo}`, 23, true, 'center');
+  add('पदार्थ / Food and beverage · प्रमाण / Quantity', 20, true);
+  bill.items.forEach(item => add(`${itemName(item)}  × ${number(item.qty)}`, 20));
+  add(`एकूण प्रमाण / Total quantity: ${totalQty}`, 21, true, 'center');
+  const lineHeight = 42;
+  const ruleHeight = 25;
+  const blankHeight = 18;
+  const height = padding * 2 + entries.reduce((sum, entry) => sum + (entry.type === 'rule' ? ruleHeight : entry.type === 'blank' ? blankHeight : lineHeight), 0);
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Canvas context is not available.');
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
+  ctx.textBaseline = 'top';
+  let y = padding;
+  entries.forEach(entry => {
+    if (entry.type === 'blank') { y += blankHeight; return; }
+    if (entry.type === 'rule') { ctx.strokeStyle = '#cbd2df'; ctx.setLineDash([8, 7]); ctx.beginPath(); ctx.moveTo(padding, y + 7); ctx.lineTo(width - padding, y + 7); ctx.stroke(); ctx.setLineDash([]); y += ruleHeight; return; }
+    ctx.font = entry.font; ctx.fillStyle = entry.color;
+    const textWidth = ctx.measureText(entry.text).width;
+    const x = entry.align === 'center' ? (width - textWidth) / 2 : padding;
+    ctx.fillText(entry.text, Math.max(padding, x), y);
+    y += lineHeight;
+  });
+  return jpegPdfFromDataUrl(canvas.toDataURL('image/jpeg', 0.92), canvas.width, canvas.height);
+}
+function buildBillPdf(bill) {
+  const lines = [
+    state.settings.courtName,
+    'BILL / CUSTOMER COPY',
+    `Bill number: ${bill.billNo}`,
+    `Date: ${displayDate(bill.createdAt, true)}`,
+    `Customer: ${bill.customerName}`,
+    bill.mobile ? `Mobile: ${bill.mobile}` : '',
+    `Coupon token: ${bill.couponNo}`,
+    '----------------------------------------------',
+    'ITEM                         QTY     AMOUNT',
+    ...bill.items.map(item => `${item.nameEn} x ${item.qty}                  ${money(item.lineTotal)}`),
+    '----------------------------------------------',
+    `Subtotal: ${money(bill.subtotal)}`,
+    `Discount: ${money(bill.discount)}`,
+    `GST (${plainMoney(bill.gstRate)}%): ${money(bill.gstAmount)}`,
+    `GRAND TOTAL: ${money(bill.grandTotal)}`,
+    `Payment: ${bill.paymentMode === 'upi' ? 'UPI' : 'Cash'} / ${bill.status.toUpperCase()}`,
+    `Received: ${money(bill.amountReceived)}`,
+    `Change: ${money(bill.change)}`,
+    `Due: ${money(bill.due)}`,
+    '----------------------------------------------',
+    state.settings.footerEn,
+    state.settings.footerMr,
+    state.settings.disclaimer
+  ].filter(Boolean);
+  return createTextPdf(lines, `Bill ${bill.billNo}`);
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.style.display = 'none';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function reportExportRows(data) {
+  if (reportState.type === 'products' || reportState.type === 'beverages') return data.rows.map(row => ({ itemEnglish: row.nameEn, itemMarathi: row.nameMr, category: row.category, quantity: row.qty, sales: plainMoney(row.sales) }));
+  if (reportState.type === 'payments') return data.rows.map(row => ({ paymentMode: row.mode, bills: row.bills, received: plainMoney(row.received), due: plainMoney(row.due) }));
+  return data.rows.map(bill => ({ date: bill.date, billNumber: bill.billNo, couponNumber: bill.couponNo, customerName: bill.customerName, mobile: bill.mobile, items: bill.items.map(item => `${item.nameEn} x ${item.qty}`).join(' | '), subtotal: plainMoney(bill.subtotal), discount: plainMoney(bill.discount), gst: plainMoney(bill.gstAmount), total: plainMoney(bill.grandTotal), paymentMode: bill.paymentMode, received: plainMoney(bill.amountReceived), due: plainMoney(bill.due), status: bill.status }));
+}
+
+function csvFromObjects(rows) {
+  if (!rows.length) return '\ufeffNo records\n';
+  const headers = Object.keys(rows[0]);
+  const quote = value => `"${String(value ?? '').replace(/"/g, '""')}"`;
+  return '\ufeff' + [headers.map(quote).join(','), ...rows.map(row => headers.map(header => quote(row[header])).join(','))].join('\n');
+}
+
+function exportReport(format) {
+  const data = getReportData();
+  const rows = reportExportRows(data);
+  const stamp = `${data.from}_to_${data.to}`;
+  if (format === 'csv') downloadBlob(new Blob([csvFromObjects(rows)], { type: 'text/csv;charset=utf-8' }), `origo-report-${stamp}.csv`);
+  else if (format === 'json') {
+    const payload = { app: 'Origo Breakfast Food Court', exportedAt: new Date().toISOString(), filters: reportState, summary: data.summary, rows };
+    downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }), `origo-report-${stamp}.json`);
+  } else {
+    downloadBlob(createTextPdf(reportPdfLines(data)), `origo-report-${stamp}.pdf`);
+  }
+  showToast(t('reportExported'), 'success');
+}
+
+function reportPdfLines(data) {
+  const lines = [`${state.settings.courtName} - ${reportTypeLabel(reportState.type)}`, `Period: ${data.from} to ${data.to}`, `Records: ${data.summary.count}`, `Gross sales: ${money(data.summary.gross)}`, `Received: ${money(data.summary.received)}`, `Open dues: ${money(data.summary.due)}`, '----------------------------------------------'];
+  if (reportState.type === 'products' || reportState.type === 'beverages') data.rows.forEach(row => lines.push(`${row.nameEn} | Qty ${row.qty} | ${money(row.sales)}`));
+  else if (reportState.type === 'payments') data.rows.forEach(row => lines.push(`${row.mode.toUpperCase()} | Bills ${row.bills} | Received ${money(row.received)} | Due ${money(row.due)}`));
+  else data.rows.forEach(bill => lines.push(`${bill.date} | ${bill.billNo} | ${bill.customerName} | ${money(bill.grandTotal)} | ${bill.status}`));
+  return lines;
+}
+
+async function whatsappReport() {
+  if (session.role !== 'owner') { authRole = 'owner'; showAuthGate(); return; }
+  const data = getReportData();
+  const stamp = `${data.from}_to_${data.to}`;
+  const blob = createTextPdf(reportPdfLines(data));
+  const filename = `origo-report-${stamp}.pdf`;
+  const message = `Origo अहवाल · ${data.from} ते ${data.to} · ${data.summary.count} रेकॉर्ड · एकूण विक्री ${money(data.summary.gross)}.`;
+  try {
+    const file = new File([blob], filename, { type: 'application/pdf' });
+    if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+      await navigator.share({ title: 'Origo अहवाल', text: message, files: [file] });
+      showToast(t('reportExported'), 'success');
+      return;
+    }
+  } catch (error) {
+    if (error && error.name === 'AbortError') return;
+    console.warn('Native report share unavailable', error);
+  }
+  downloadBlob(blob, filename);
+  window.open(`https://wa.me/?text=${encodeURIComponent(message + ' PDF डाउनलोड करून WhatsApp मध्ये जोडा.')}`, '_blank', 'noopener,noreferrer');
+  showToast(t('fileReady'), 'success');
+}
+
+function downloadBackup() {
+  if (session.role !== 'owner') { authRole = 'owner'; showAuthGate(); return; }
+  const backup = { ...state, backupVersion: 1, backedUpAt: new Date().toISOString() };
+  downloadBlob(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }), `origo-backup-${todayIso()}.json`);
+  showToast('Backup downloaded.', 'success');
+}
+
+function restoreBackup(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      if (!parsed || !Array.isArray(parsed.bills) || !Array.isArray(parsed.menu) || !Array.isArray(parsed.inventory) || !parsed.settings) throw new Error('invalid');
+      state = { ...makeDefaultState(), ...parsed, settings: { ...defaultSettings(), ...parsed.settings } };
+      saveState();
+      session.view = 'dashboard';
+      render();
+      showToast(t('backupRestored'), 'success');
+    } catch (error) { showToast(t('backupInvalid'), 'error'); }
+  };
+  reader.readAsText(file);
+}
+
+function readFormNumber(form, name) {
+  return Math.max(number(form.elements[name]?.value, 0), 0);
+}
+
+function saveInventoryForm(form) {
+  const values = {
+    nameEn: form.elements.nameEn.value.trim(), nameMr: form.elements.nameMr.value.trim(), unit: form.elements.unit.value.trim(), purchaseDate: form.elements.purchaseDate.value,
+    purchasedQty: readFormNumber(form, 'purchasedQty'), remainingQty: readFormNumber(form, 'remainingQty'), reorderLevel: readFormNumber(form, 'reorderLevel'), purchaseCost: readFormNumber(form, 'purchaseCost')
+  };
+  if (!values.nameEn || !values.unit || !values.purchaseDate) { showToast(t('required'), 'error'); return; }
+  if (inventoryEditingId) {
+    const index = state.inventory.findIndex(item => item.id === inventoryEditingId);
+    if (index >= 0) state.inventory[index] = { ...state.inventory[index], ...values };
+  } else state.inventory.unshift({ id: `raw-${Date.now()}-${Math.random().toString(36).slice(2,6)}`, ...values });
+  saveState(); inventoryEditingId = null; render(); showToast(t('inventorySaved'), 'success');
+}
+
+function saveBusinessForm(form) {
+  state.settings.courtName = form.elements.courtName.value.trim() || state.settings.courtName;
+  state.settings.fssai = form.elements.fssai.value.trim();
+  state.settings.gstNo = form.elements.gstNo.value.trim();
+  state.settings.gstTax = Math.min(100, readFormNumber(form, 'gstTax'));
+  state.settings.defaultDiscount = readFormNumber(form, 'defaultDiscount');
+  state.settings.footerEn = form.elements.footerEn.value.trim() || I18N.en.footerEn;
+  state.settings.footerMr = form.elements.footerMr.value.trim() || I18N.en.footerMr;
+  state.settings.disclaimer = form.elements.disclaimer.value.trim();
+  saveState(); render(); showToast(t('businessSaved'), 'success');
+}
+
+function saveSecurityForm(form) {
+  const staffPin = form.elements.staffPin.value.trim();
+  const ownerPin = form.elements.ownerPin.value.trim();
+  const ownerPin2 = form.elements.ownerPin2.value.trim();
+  const deleteTopPin = form.elements.deleteTopPin.value.trim();
+  const deleteBottomPin = form.elements.deleteBottomPin.value.trim();
+  if (![staffPin, ownerPin, ownerPin2, deleteTopPin, deleteBottomPin].every(pin => /^\d{4,8}$/.test(pin))) { showToast('PINs must be 4 to 8 digits.', 'error'); return; }
+  state.settings.staffPin = staffPin; state.settings.ownerPin = ownerPin; state.settings.ownerPin2 = ownerPin2; state.settings.deleteTopPin = deleteTopPin; state.settings.deleteBottomPin = deleteBottomPin;
+  saveState(); render(); showToast(t('securitySaved'), 'success');
+}
+function saveMenuForm(form) {
+  const values = { nameEn: form.elements.nameEn.value.trim(), nameMr: form.elements.nameMr.value.trim(), category: form.elements.category.value, price: readFormNumber(form, 'price'), icon: form.elements.icon.value.trim() || (form.elements.category.value === 'beverage' ? '☕' : '🍽'), active: true };
+  if (!values.nameEn || values.price < 0) { showToast(t('required'), 'error'); return; }
+  if (menuEditingId) {
+    const index = state.menu.findIndex(item => item.id === menuEditingId);
+    if (index >= 0) state.menu[index] = { ...state.menu[index], ...values };
+  } else state.menu.push({ id: `menu-${Date.now()}-${Math.random().toString(36).slice(2,6)}`, ...values });
+  menuEditingId = null; saveState(); render(); showToast(t('menuSaved'), 'success');
+}
+
+function saveEditedBill(form) {
+  const bill = findBill(form.elements.billId.value);
+  if (!bill) return;
+  bill.customerName = form.elements.customerName.value.trim() || bill.customerName;
+  bill.mobile = form.elements.mobile.value.trim();
+  bill.items = bill.items.map((item, index) => {
+    const qty = Math.max(1, Math.floor(number(form.elements[`itemQty-${index}`]?.value, item.qty)));
+    const rate = number(item.rate, item.qty ? number(item.lineTotal) / item.qty : 0);
+    return { ...item, qty, rate, lineTotal: rate * qty };
+  });
+  bill.subtotal = bill.items.reduce((sum, item) => sum + number(item.lineTotal), 0);
+  bill.discount = Math.min(Math.max(number(bill.discount), 0), bill.subtotal);
+  bill.taxable = Math.max(bill.subtotal - bill.discount, 0);
+  bill.gstAmount = bill.taxable * number(bill.gstRate) / 100;
+  bill.grandTotal = bill.taxable + bill.gstAmount;
+  bill.paymentMode = form.elements.paymentMode.value;
+  bill.amountReceived = bill.paymentMode === 'upi' ? bill.grandTotal : Math.max(number(form.elements.amountReceived.value), 0);
+  bill.change = Math.max(bill.amountReceived - bill.grandTotal, 0);
+  bill.due = Math.max(bill.grandTotal - bill.amountReceived, 0);
+  bill.status = bill.due <= 0.005 ? 'paid' : bill.amountReceived > 0 ? 'partial' : 'due';
+  bill.updatedAt = new Date().toISOString();
+  saveState(); modalState = null; render(); showToast('Bill updated.', 'success');
+}
+
+function settleBill(form) {
+  const bill = findBill(form.elements.billId.value);
+  if (!bill) return;
+  bill.paymentMode = form.elements.paymentMode.value;
+  bill.amountReceived = bill.grandTotal;
+  bill.change = 0;
+  bill.due = 0;
+  bill.status = 'paid';
+  bill.settledAt = new Date().toISOString();
+  saveState(); modalState = null; render(); showToast(t('settled'), 'success');
+}
+
+function handleAuthSubmit(form) {
+  const pin = form.elements.pin.value.trim();
+  const pin2 = authRole === 'owner' ? form.elements.pin2.value.trim() : '';
+  const expected = authRole === 'owner' ? state.settings.ownerPin : state.settings.staffPin;
+  const expected2 = state.settings.ownerPin2 || state.settings.ownerPin;
+  if (pin !== expected || (authRole === 'owner' && pin2 !== expected2)) {
+    const error = document.getElementById('auth-error');
+    if (error) error.textContent = t('invalidPin');
+    form.elements.pin.select();
+    return;
+  }
+  session.role = authRole;
+  session.view = authRole === 'owner' ? (pendingView || 'dashboard') : 'dashboard';
+  if (!openTabs.includes(session.view)) openTabs.push(session.view);
+  pendingView = null;
+  document.getElementById('auth-gate').hidden = true;
+  render();
+  showToast(`${authRole === 'owner' ? t('owner') : t('staff')} access unlocked.`, 'success');
+}
+function confirmDeleteData() {
+  const top = document.getElementById('delete-top-input')?.value.trim();
+  const bottom = document.getElementById('delete-bottom-input')?.value.trim();
+  if (top !== state.settings.deleteTopPin || bottom !== state.settings.deleteBottomPin) {
+    const error = document.getElementById('delete-error');
+    if (error) error.textContent = t('invalidPin');
+    return;
+  }
+  state.bills = [];
+  state.inventory = [];
+  state.nextBillSeq = 1;
+  state.nextCouponSeq = 1;
+  saveState();
+  modalState = null;
+  render();
+  showToast(t('deleteSuccess'), 'success');
+}
+
+function handleClick(event) {
+  const actionEl = event.target.closest('[data-action]');
+  if (!actionEl) return;
+  const action = actionEl.dataset.action;
+  if (!(actionEl.tagName === 'INPUT' && actionEl.type === 'file') && action !== 'language' && action !== 'auth-role' && action !== 'modal-backdrop') event.preventDefault();
+  switch (action) {
+    case 'language':
+      state.settings.language = actionEl.dataset.lang === 'mr' ? 'mr' : 'en'; saveState(); render(); break;
+    case 'navigate': navigate(actionEl.dataset.view); break;
+    case 'show-view-menu': modalState = { type: 'view-menu' }; renderModal(); break;
+    case 'history-search': render(); break;
+    case 'history-clear': historySearch = ''; render(); break;
+    case 'adjust-inventory': adjustInventory(actionEl.dataset.id, actionEl.dataset.delta); break;
+    case 'start-coupon': updateCouponStatus(actionEl.dataset.id, 'in-progress'); break;
+    case 'open-view': modalState = null; navigate(actionEl.dataset.view); break;
+    case 'edit-bill': { const bill = findBill(actionEl.dataset.id); if (bill) { modalState = { type: 'edit-bill', bill }; renderModal(); } break; }
+    case 'settle-bill': { const bill = findBill(actionEl.dataset.id); if (bill) { modalState = { type: 'settle-bill', bill }; renderModal(); } break; }
+    case 'close-tab': { const closing = actionEl.dataset.view; openTabs = openTabs.filter(view => view !== closing); if (session.view === closing) session.view = openTabs[openTabs.length - 1] || 'dashboard'; render(); break; }
+    case 'logout': session.role = null; session.view = 'dashboard'; openTabs = ['dashboard']; authRole = 'staff'; render(); break;
+    case 'auth-role': authRole = actionEl.dataset.role === 'owner' ? 'owner' : 'staff'; showAuthGate(); break;
+    case 'add-menu': addToCart(actionEl.dataset.id); break;
+    case 'menu-category': menuCategory = actionEl.dataset.category || 'all'; render(); break;
+    case 'cart-plus': updateCart(actionEl.dataset.id, 1); break;
+    case 'cart-minus': updateCart(actionEl.dataset.id, -1); break;
+    case 'cart-remove': billingDraft.cart = billingDraft.cart.filter(item => item.id !== actionEl.dataset.id); render(); break;
+    case 'clear-cart': resetBill(); break;
+    case 'fill-total': billingDraft.amountReceived = plainMoney(calculateBilling().total); render(); break;
+    case 'save-bill': createBill(); break;
+    case 'print-bill': printBill(actionEl.dataset.id); break;
+    case 'download-bill-pdf': downloadBillPdf(actionEl.dataset.id); break;
+    case 'print-last': printLast(); break;
+    case 'mark-served': updateCouponStatus(actionEl.dataset.id, 'served'); break;
+    case 'edit-inventory': inventoryEditingId = actionEl.dataset.id; session.view = 'inventory'; render(); break;
+    case 'cancel-inventory-edit': inventoryEditingId = null; render(); break;
+    case 'delete-inventory': {
+      const item = state.inventory.find(i => i.id === actionEl.dataset.id); if (item) { modalState = { type: 'confirm-inventory', id: item.id, itemName: item.nameEn }; renderModal(); } break;
+    }
+    case 'confirm-remove-inventory': {
+      state.inventory = state.inventory.filter(item => item.id !== modalState.id); inventoryEditingId = null; saveState(); modalState = null; render(); showToast(t('deleted'), 'success'); break;
+    }
+    case 'edit-menu': menuEditingId = actionEl.dataset.id; render(); break;
+    case 'cancel-menu-edit': menuEditingId = null; render(); break;
+    case 'delete-menu': {
+      const item = state.menu.find(i => i.id === actionEl.dataset.id); if (item) { modalState = { type: 'confirm-menu', id: item.id, itemName: `${item.nameEn} · ${item.nameMr || ''}` }; renderModal(); } break;
+    }
+    case 'confirm-remove-menu': state.menu = state.menu.filter(item => item.id !== modalState.id); menuEditingId = null; saveState(); modalState = null; render(); showToast(t('deleted'), 'success'); break;
+    case 'report-type': reportState.type = actionEl.dataset.type || 'bills'; render(); break;
+    case 'report-csv': exportReport('csv'); break;
+    case 'report-json': exportReport('json'); break;
+    case 'report-pdf': exportReport('pdf'); break;
+    case 'report-whatsapp': whatsappReport(); break;
+    case 'download-backup': downloadBackup(); break;
+    case 'restore-trigger': document.getElementById('restore-input')?.click(); break;
+    case 'remove-logo': state.settings.logo = ''; saveState(); render(); showToast(t('deleted'), 'success'); break;
+    case 'open-delete-data': if (session.role === 'owner') { modalState = { type: 'delete-data' }; renderModal(); } else { authRole = 'owner'; showAuthGate(); } break;
+    case 'confirm-delete-data': confirmDeleteData(); break;
+    case 'open-help': modalState = { type: 'help' }; renderModal(); break;
+    case 'close-modal': modalState = null; renderModal(); break;
+    case 'modal-backdrop': if (event.target === actionEl) { modalState = null; renderModal(); } break;
+    case 'confirm-modal': if (modalState?.onConfirm) modalState.onConfirm(); break;
+    case 'new-bill-after-save': modalState = null; session.view = 'billing'; render(); break;
+    default: break;
+  }
+}
+
+function handleInput(event) {
+  const target = event.target;
+  if (target.dataset.draft) {
+    const key = target.dataset.draft;
+    billingDraft[key] = target.type === 'checkbox' ? target.checked : target.value;
+    if (key === 'paymentMode') { render(); return; }
+    refreshBillingTotals();
+  }
+  if (target.dataset.historySearch !== undefined) historySearch = target.value;
+  if (target.dataset.menuSearch !== undefined) {
+    menuSearch = target.value;
+    const grid = document.getElementById('menu-grid');
+    if (grid) {
+      const filtered = getActiveMenu().filter(item => {
+        const term = menuSearch.trim().toLowerCase();
+        return (!term || `${item.nameEn} ${item.nameMr}`.toLowerCase().includes(term)) && (menuCategory === 'all' || item.category === menuCategory);
+      });
+      grid.innerHTML = filtered.length ? filtered.map(renderMenuItemButton).join('') : `<div class="no-results" style="grid-column:1/-1">${esc(t('noItems'))}</div>`;
+    }
+  }
+}
+
+function refreshBillingTotals() {
+  const calc = calculateBilling();
+  const totals = document.getElementById('billing-totals');
+  const change = document.getElementById('change-box');
+  if (totals) totals.innerHTML = renderBillingTotals(calc);
+  if (change) change.innerHTML = renderChangeBox(calc);
+  const checkout = document.getElementById('checkout-btn');
+  if (checkout) checkout.disabled = !calc.cartItems.length;
+}
+
+function handleChange(event) {
+  const target = event.target;
+  if (target.dataset.action === 'logo-upload' && target.files?.[0]) {
+    const file = target.files[0];
+    if (file.size > 2 * 1024 * 1024) { showToast('Logo must be smaller than 2 MB.', 'error'); return; }
+    const reader = new FileReader();
+    reader.onload = () => { state.settings.logo = reader.result; saveState(); render(); showToast('Logo saved.', 'success'); };
+    reader.readAsDataURL(file);
+  }
+  if (target.dataset.action === 'restore-file' && target.files?.[0]) restoreBackup(target.files[0]);
+  if (target.dataset.report) {
+    if (target.dataset.report === 'preset') {
+      reportState.preset = target.value;
+      if (target.value !== 'custom') Object.assign(reportState, reportRangeFromPreset(target.value));
+      render();
+    } else reportState[target.dataset.report] = target.value;
+  }
+}
+
+function handleSubmit(event) {
+  event.preventDefault();
+  const form = event.target;
+  if (form.id === 'auth-form') return handleAuthSubmit(form);
+  if (form.id === 'inventory-form') return saveInventoryForm(form);
+  if (form.id === 'inventory-usage-form') return saveInventoryUsageForm(form);
+  if (form.id === 'edit-bill-form') return saveEditedBill(form);
+  if (form.id === 'settle-bill-form') return settleBill(form);
+  if (form.id === 'business-form') return saveBusinessForm(form);
+  if (form.id === 'security-form') return saveSecurityForm(form);
+  if (form.id === 'menu-form') return saveMenuForm(form);
+  if (form.id === 'report-filter-form') {
+    const data = new FormData(form);
+    reportState.preset = data.get('preset'); reportState.from = data.get('from'); reportState.to = data.get('to'); reportState.type = data.get('type');
+    if (reportState.from > reportState.to) { const temp = reportState.from; reportState.from = reportState.to; reportState.to = temp; }
+    render();
+  }
+}
+
+function handleKeydown(event) {
+  if (event.key === 'Escape' && modalState) { modalState = null; renderModal(); return; }
+  if (event.key === 'F1') { event.preventDefault(); navigate('inventory'); return; }
+  if (event.key === 'F2') { event.preventDefault(); navigate('billing'); return; }
+  if (event.key === 'F3') { event.preventDefault(); navigate('history'); return; }
+  if (event.key === 'F4') { event.preventDefault(); navigate('menu'); return; }
+  if (event.key === 'F6') { event.preventDefault(); navigate('coupons'); return; }
+  if (event.ctrlKey && event.key === 'Enter' && session.view === 'billing') { event.preventDefault(); createBill(); }
+}
+
+function applyRemoteState(remotePayload) {
+  if (!remotePayload?.state || remotePayload.updatedBy === window.OrigoFirebase?.clientId) return;
+  const remote = remotePayload.state;
+  if (!Array.isArray(remote.menu) || !Array.isArray(remote.inventory) || !Array.isArray(remote.bills) || !remote.settings) return;
+  const fresh = makeDefaultState();
+  applyingRemoteState = true;
+  state = {
+    ...fresh,
+    ...remote,
+    settings: { ...fresh.settings, ...remote.settings },
+    menu: remote.menu,
+    inventory: remote.inventory,
+    bills: remote.bills,
+    nextBillSeq: Number(remote.nextBillSeq) || 1,
+    nextCouponSeq: Number(remote.nextCouponSeq) || 1
+  };
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) { console.warn('Could not mirror Firebase state locally.', error); }
+  applyingRemoteState = false;
+  cloudSync.lastSync = new Date().toISOString();
+  cloudSync.status = 'connected';
+  render();
+}
+
+function initFirebaseSync() {
+  const firebase = window.OrigoFirebase;
+  if (!firebase?.enabled) {
+    cloudSync.status = 'local';
+    return;
+  }
+  cloudSync.status = firebase.status || 'connecting';
+  render();
+  firebase.ready.then(async ready => {
+    if (!ready || !firebase.connected) {
+      cloudSync.status = firebase.status === 'error' ? 'error' : 'local';
+      cloudSync.error = firebase.error || 'Firebase is not connected.';
+      render();
+      return;
+    }
+    cloudSync.status = 'connected';
+    render();
+    const remote = await firebase.fetchState();
+    if (remote?.state) applyRemoteState(remote);
+    else {
+      await firebase.saveState(state);
+      cloudSync.lastSync = new Date().toISOString();
+    }
+    firebase.subscribe(applyRemoteState);
+  }).catch(error => {
+    cloudSync.status = 'error';
+    cloudSync.error = error?.message || 'Firebase initialization failed.';
+    render();
+  });
+}
+
+window.addEventListener('origo-firebase-status', event => {
+  cloudSync.status = event.detail?.status || 'local';
+  cloudSync.error = event.detail?.error || '';
+  if (cloudSync.status === 'connected') cloudSync.lastSync = new Date().toISOString();
+  if (document.getElementById('topbar')) render();
+});
+
+document.addEventListener('click', handleClick);
+document.addEventListener('input', handleInput);
+document.addEventListener('change', handleChange);
+document.addEventListener('submit', handleSubmit);
+document.addEventListener('keydown', handleKeydown);
+
+// Register the service worker when the app is served over HTTP(S). It is harmless in a local file preview.
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+
+render();
+initFirebaseSync();
+setInterval(() => { if (session.role === 'staff' && session.view === 'dashboard') render(); }, 60000);
+
+  
+
+  
+  
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2a53bb239287e88',t:'MTc4NjU5ODAzNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
